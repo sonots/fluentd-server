@@ -3,10 +3,10 @@ h2
 br
 form action="/posts/#{@post.id}" method="post"
   .form-group
-    label[for="post_title"]
-      | Title:
+    label[for="post_name"]
+      | Name:
     br
-    input id="post_title" class="form-control" name="post[title]" type="text" value=@post.title
+    input id="post_name" class="form-control" name="post[name]" type="text" value=@post.name
   .form-group
     label[for="post_body"]
       | Body:

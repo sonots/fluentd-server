@@ -14,12 +14,12 @@
 ActiveRecord::Schema.define(version: 20140512203133) do
 
   create_table "posts", force: true do |t|
-    t.string   "title"
+    t.string   "name"
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "posts", ["title"], name: "index_posts_on_title"
+  add_index "posts", ["name"], name: "index_posts_on_name"
 
 end

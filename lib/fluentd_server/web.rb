@@ -24,14 +24,14 @@ class FluentdServer::Web < Sinatra::Base
 
   # get ALL posts
   get "/" do
-    @posts = Post.order("title ASC")
+    @posts = Post.order("name ASC")
     slim :"posts/index"
   end
 
   # create new post
   get "/posts/create" do
-    @title = "Create"
     @tab = 'create'
+    @title = 'Create'
     @post = Post.new
     slim :"posts/create"
   end
@@ -39,7 +39,7 @@ class FluentdServer::Web < Sinatra::Base
   post "/posts" do
     @post = Post.new(params[:post])
     if @post.save
-      redirect "posts/#{@post.id}", :notice => @post.decorate.success_message
+      redirect "posts/#{@post.id}/edit", :notice => @post.decorate.success_message
     else
       redirect "posts/create", :error => @post.decorate.error_message
     end
@@ -47,37 +47,37 @@ class FluentdServer::Web < Sinatra::Base
 
   # edit post
   get "/posts/:id/edit" do
-    @post = Post.find_by(title: params[:id])
-    @title = "Edit"
+    @title = 'Edit'
+    @post = Post.find(params[:id])
     slim :"posts/edit"
   end
 
   post "/posts/:id" do
     @post = Post.find(params[:id])
     if @post.update(params[:post])
-      redirect "/posts/#{@post.id}", :notice => @post.decorate.success_message
+      redirect "/posts/#{@post.id}/edit", :notice => @post.decorate.success_message
     else
-      redirect "/posts/#{@post.id}", :error => @post.decorate.error_message
+      redirect "/posts/#{@post.id}/edit", :error => @post.decorate.error_message
     end
   end
 
   # list all posts
   get "/json/list" do
-    @posts = Post.order("title ASC")
+    @posts = Post.order("name ASC")
     content_type :json
     @posts.to_json
   end
 
   # get post
-  get "/json/:title" do
-    @post = Post.find_by(title: params[:title])
+  get "/json/:name" do
+    @post = Post.find_by(name: params[:name])
     content_type :json
     @post.to_json
   end
 
   # render erb body
-  get "/api/:title" do
-    @post = Post.find_by(title: params[:title])
+  get "/api/:name" do
+    @post = Post.find_by(name: params[:name])
     query_params = parse_query(request.query_string)
     content_type :text
     @post.decorate.render_body(query_params)

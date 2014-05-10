@@ -44,7 +44,7 @@ module FluentdServer::WebHelper
   end
 
   def title
-    @title || 'Fluentd Server'
+    @title || 'Welcome'
   end
 
   def tab
