@@ -5,20 +5,64 @@
 
 A Fluentd config distribution server
 
-## Prerequisites
+Demo: [http://fluentd-server.herokuapp.com](http://fluentd-server.herokuapp.com)
 
-* SQLite
+## What You Can Do
+
+With Fluentd Server, you can manage fluentd configuration file with `erb`. 
+
+For example, you may create a config whose name is `worker` as:
+
+```
+<source>
+  type forward
+  port <%= port %>
+</source>
+
+<match **>
+  type stdout
+</match>
+```
+
+Then you can download the config via an API whose uri is like `/api/worker?port=24224` where its query parameters are replaced with variables in the erb. 
+The downloaded contents should become as follows:
+
+```
+<source>
+  type forward
+  port 24224
+</source>
+
+<match **>
+  type stdout
+</match>
+```
+
+## How to Use
+
+The `include` directive of fluentd config supports `http`, so write just one line on your Fluentd config as:
+
+```
+# /etc/fluentd.conf
+include http://fqdn.to.fluentd-server/api/{name}?port=24224
+```
+
+so that it will download the real configuration from the Fluentd Server.
 
 ## Installation
 
-Install with Ruby 2.0 or later. 
+Prerequisites
 
-### Gem package
+* SQLite
+* Ruby 2.0 or later
 
-Five easy steps on installation with gem and SQLite.
+### From Gem package
+
+Easy steps on installation with gem and SQLite.
 
 ```bash
 $ gem install fluentd-server
+$ gem install sqlite3
 $ fluentd-server new
 $ cd fluentd-server
 $ fluentd-server init # creates database scheme on SQLite
@@ -27,7 +71,7 @@ $ fluentd-server start
 
 Then see `http://localhost:5126/`.
 
-### Git repository
+### From Git repository
 
 Install from git repository. 
 
