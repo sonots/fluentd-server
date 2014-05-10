@@ -13,5 +13,8 @@ form action="/posts/#{@post.id}" method="post"
     br
     textarea#post_body.form-control[name="post[body]" rows="10"]
       = @post.body
+    br
+    a href=url_for("/api/#{@post.name}")
+      | Render
   button.btn.btn-success[type="submit"]
     | Submit
