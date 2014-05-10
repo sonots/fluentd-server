@@ -28,13 +28,23 @@ EOS
 
   default_command :start
 
-  desc "new", "Creates fluentd_server resource directory"
+  desc "new", "Creates fluentd-server resource directory"
   def new
     FileUtils.mkdir_p(LOG_DIR)
     File.write ENV_FILE, DEFAULT_DOTENV
     File.write PROCFILE, DEFAULT_PROCFILE
     configru_file = File.expand_path("../../../config.ru", __FILE__)
     FileUtils.copy(configru_file, CONFIGRU_FILE)
+    puts 'fluentd-server new finished.'
+  end
+
+  desc "init", "Creates database schema"
+  def init
+    Dotenv.load
+    require 'rake'
+    require 'sinatra/activerecord/rake'
+    Rake::Task['db:migrate'].invoke
+    puts 'fluentd-server init finished.'
   end
 
   desc "start", "Sartup fluentd_server"
