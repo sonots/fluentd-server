@@ -1,0 +1,9 @@
+ul
+  - @posts.each do |post|
+    li
+      h4
+        a href="/posts/#{post.id}/edit"
+          = post.title
+      p
+        | Created: 
+        = post.created_at

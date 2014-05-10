@@ -1,0 +1,17 @@
+h2
+  | Edit
+br
+form action="/posts/#{@post.id}" method="post"
+  .form-group
+    label[for="post_title"]
+      | Title:
+    br
+    input id="post_title" class="form-control" name="post[title]" type="text" value=@post.title
+  .form-group
+    label[for="post_body"]
+      | Body:
+    br
+    textarea#post_body.form-control[name="post[body]" rows="10"]
+      = @post.body
+  button.btn.btn-success[type="submit"]
+    | Submit

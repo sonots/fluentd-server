@@ -1,0 +1,26 @@
+doctype html
+html[lang="en"]
+  head
+    meta[charset="utf-8"]
+    meta[name="viewport" content="width=device-width, initial-scale=1.0"]
+    meta[name="description" content=""]
+    meta[name="author" content=""]
+    title
+      = title
+    link[href=url_for("/css/bootstrap.min.css") rel="stylesheet"]
+    style
+      |  body { padding-top: 75px; } .starter-template { padding: 40px 15px; text-align: center; } .container { max-width:1000px; } 
+  body
+    == slim :'_navbar'
+    .container
+      - if flash[:notice]
+        p.alert.alert-success
+          == flash[:notice]
+      - if flash[:error]
+        p.alert.alert-danger
+          == flash[:error]
+      == yield
+    script[src=url_for("/js/jquery-1.10.2.min.js")]
+    script[src=url_for("/js/bootstrap.min.js")]
+    script
+      |  //** removes alerts after 4 seconds */ window.setTimeout(function() { $(".alert").fadeTo(4500, 0).slideUp(500, function(){ $(this).remove(); }); }, 4000); 
