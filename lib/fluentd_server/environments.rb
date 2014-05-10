@@ -1,0 +1,25 @@
+require 'sinatra'
+require 'sinatra/activerecord'
+require 'fluentd_server/config'
+require 'fluentd_server/logger'
+
+configure do
+  set :show_exceptions, true
+  ActiveRecord::Base.logger = FluentdServer.logger
+  I18n.enforce_available_locales = false
+
+  if FluentdServer::Config.database_url.include?('sqlite')
+    set :database, FluentdServer::Config.database_url 
+  else
+    # postgresql://user:password@host/database
+    db = URI.parse(FluentdServer::Config.database_url)
+    ActiveRecord::Base.establish_connection(
+      :adapter  => db.scheme,
+      :host     => db.host,
+      :username => db.user,
+      :password => db.password,
+      :database => db.path[1..-1],
+      :encoding => 'utf8'
+    )
+  end
+end

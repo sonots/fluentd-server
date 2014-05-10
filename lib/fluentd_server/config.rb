@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'sinatra/activerecord'
-require 'fluentd_server/logger'
 require 'dotenv'
 Dotenv.load
 
@@ -28,11 +27,4 @@ module FluentdServer::Config
   def self.log_shift_size
     ENV.fetch('LOG_SHIFT_SIZE', '1048576')
   end
-end
-
-configure do
-  set :database, FluentdServer::Config.database_url
-  set :show_exceptions, true
-  ActiveRecord::Base.logger = FluentdServer.logger
-  I18n.enforce_available_locales = false
 end

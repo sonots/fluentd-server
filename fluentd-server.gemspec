@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'fluentd_server/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "fluentd_server"
+  spec.name          = "fluentd-server"
   spec.version       = FluentdServer::VERSION
   spec.authors       = ["Naotoshi Seo"]
   spec.email         = ["sonots@gmail.com"]
   spec.description   = %q{Fluentd config distribution server}
   spec.summary       = spec.description
-  spec.homepage      = "https://github.com/sonots/fluentd_server"
+  spec.homepage      = "https://github.com/sonots/fluentd-server"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -38,4 +38,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'slim'
   spec.add_runtime_dependency "unicorn"
   spec.add_runtime_dependency "unicorn-worker-killer"
+  # spec.add_runtime_dependency 'sqlite3'
 end
