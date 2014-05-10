@@ -1,6 +1,7 @@
 require "fileutils"
 require "dotenv"
 require "thor"
+require 'fluentd_server'
 
 class FluentdServer::CLI < Thor
   BASE_DIR = File.join(Dir.pwd, "fluentd_server")

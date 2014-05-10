@@ -1,4 +1,5 @@
 require 'cgi'
+require 'fluentd_server'
 
 module FluentdServer::WebHelper
   include Rack::Utils

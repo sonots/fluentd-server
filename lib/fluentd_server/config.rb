@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/activerecord'
+require 'fluentd_server'
 require 'dotenv'
 Dotenv.load
 

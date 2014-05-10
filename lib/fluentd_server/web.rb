@@ -3,6 +3,7 @@ require 'sinatra/flash'
 require 'sinatra/redirect_with_flash'
 require 'slim'
 
+require 'fluentd_server'
 require 'fluentd_server/config'
 require 'fluentd_server/environments'
 require 'fluentd_server/model'

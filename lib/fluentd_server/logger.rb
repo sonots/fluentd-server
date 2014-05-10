@@ -1,4 +1,5 @@
 require 'logger'
+require 'fluentd_server'
 require "fluentd_server/config"
 
 module FluentdServer
