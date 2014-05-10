@@ -11,10 +11,10 @@ configure do
   if FluentdServer::Config.database_url.include?('sqlite')
     set :database, FluentdServer::Config.database_url 
   else
-    # postgresql://user:password@host/database
+    # DATABASE_URL => "postgres://randuser:randpass@randhost:randport/randdb" on heroku
     db = URI.parse(FluentdServer::Config.database_url)
     ActiveRecord::Base.establish_connection(
-      :adapter  => db.scheme,
+      :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
       :host     => db.host,
       :username => db.user,
       :password => db.password,
