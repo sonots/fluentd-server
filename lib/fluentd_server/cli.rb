@@ -4,7 +4,7 @@ require "thor"
 require 'fluentd_server'
 
 class FluentdServer::CLI < Thor
-  BASE_DIR = File.join(Dir.pwd, "fluentd_server")
+  BASE_DIR = File.join(Dir.pwd, "fluentd-server")
   DATA_DIR = File.join(BASE_DIR, "data")
   LOG_DIR = File.join(BASE_DIR, "log")
   LOG_FILE = File.join(LOG_DIR, "application.log")

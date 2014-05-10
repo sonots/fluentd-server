@@ -2,7 +2,7 @@ ul
   - @posts.each do |post|
     li
       h4
-        a href="/posts/#{post.id}/edit"
+        a href=url_for("/posts/#{post.id}/edit")
           = post.name
       p
         | Created: 

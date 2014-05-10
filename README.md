@@ -9,7 +9,7 @@ Demo: [http://fluentd-server.herokuapp.com](http://fluentd-server.herokuapp.com)
 
 ## What You Can Do
 
-With Fluentd Server, you can manage fluentd configuration file with `erb`. 
+With Fluentd Server, you can manage fluentd configuration files centrally with `erb`. 
 
 For example, you may create a config whose name is `worker` as:
 
@@ -40,7 +40,7 @@ The downloaded contents should become as follows:
 
 ## How to Use
 
-The `include` directive of fluentd config supports `http`, so write just one line on your Fluentd config as:
+The `include` directive of fluentd config supports `http`, so write just one line on your fluentd.conf as:
 
 ```
 # /etc/fluentd.conf
@@ -99,6 +99,25 @@ HOST=0.0.0.0
 # LOG_PATH=log/application.log
 # LOG_LEVEL=warn
 ```
+
+## ToDo
+
+* Handling burst accesses
+
+  * Restarting the entire fluentd cluster burstly accesses to Fluentd Server. 
+  * Using puma would be better than using unicorn?
+
+* Exporting conf
+
+  * Rather, saving and loading conf from local files would be nice because it makes possible to manage conf with git
+  * Fluentd Server should cache them on memory, and refresh caches by detecting files are updated
+
+* Supporting an array and a hash with API as query parameters
+
+  * One may want to use variables of an array or a hash in erb
+  * Write API reference
+
+* Write tests
 
 ## ChangeLog
 

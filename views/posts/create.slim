@@ -1,7 +1,7 @@
 h2
   | Create
 br
-form[action="/posts" method="post" role="form"]
+form[action=url_for("/posts") method="post" role="form"]
   .form-group
     label[for="post_name"]
       | Name:
