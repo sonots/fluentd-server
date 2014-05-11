@@ -117,8 +117,6 @@ HOST=0.0.0.0
   * One may want to use variables of an array or a hash in erb
   * Write API reference
 
-* Write tests
-
 ## ChangeLog
 
 See [CHANGELOG.md](CHANGELOG.md) for details.

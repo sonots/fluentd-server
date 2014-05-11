@@ -5,7 +5,7 @@ class CreatePosts < ActiveRecord::Migration
       t.text :body
       t.timestamps
     end
-    add_index :posts, :name, length: 255 # explicit length is required for MySQL
+    add_index :posts, :name, length: 255, unique: true # explicit length is required for MySQL
   end
  
   def self.down

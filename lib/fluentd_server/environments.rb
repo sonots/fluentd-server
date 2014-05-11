@@ -7,8 +7,10 @@ configure do
   set :show_exceptions, true
   ActiveRecord::Base.logger = FluentdServer.logger
   I18n.enforce_available_locales = false
+end
 
-  if FluentdServer::Config.database_url.include?('sqlite')
+configure :production, :development do
+  if FluentdServer::Config.database_url.start_with?('sqlite')
     set :database, FluentdServer::Config.database_url 
   else
     # DATABASE_URL => "postgres://randuser:randpass@randhost:randport/randdb" on heroku
@@ -22,4 +24,11 @@ configure do
       :encoding => 'utf8'
     )
   end
+end
+
+configure :test do
+  ActiveRecord::Base.establish_connection(
+    :adapter  => 'sqlite3',
+    :database => ':memory'
+  )
 end

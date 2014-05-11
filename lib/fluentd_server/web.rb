@@ -63,21 +63,21 @@ class FluentdServer::Web < Sinatra::Base
     end
   end
 
-  # list all posts
+  # get ALL posts in json
   get "/json/list" do
-    @posts = Post.order("name ASC")
+    @posts = Post.order("id ASC")
     content_type :json
     @posts.to_json
   end
 
-  # get post
+  # get post in json
   get "/json/:name" do
     @post = Post.find_by(name: params[:name])
     content_type :json
     @post.to_json
   end
 
-  # render erb body
+  # render api
   get "/api/:name" do
     @post = Post.find_by(name: params[:name])
     query_params = parse_query(request.query_string)
