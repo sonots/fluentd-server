@@ -5,6 +5,35 @@ module FluentdServer::WebHelper
   include Rack::Utils
   alias_method :h, :escape_html
 
+  # override RackUtil.parse_query
+  # @param qs query string
+  # @param d delimiter
+  # @return
+  def parse_query(qs, d=nil)
+    params = {}
+    (qs || '').split(d ? /[#{d}] */n : DEFAULT_SEP).each do |p|
+      k, v = p.split('=', 2).map { |x| unescape(x) }
+      if k.ends_with?('[]')
+        k1 = k[0..-3]
+        if params[k1] and params[k1].class == Array
+          params[k1] << v
+        else
+          params[k1] = [v]
+        end
+      elsif k.ends_with?(']') and md = k.match(/^([^\[]+)\[([^\]]+)\]$/)
+        k1, k2 = md[1], md[2]
+        if params[k1] and params[k1].class == Hash
+          params[k1][k2] = v
+        else
+          params[k1] = { k2 => v }
+        end
+      else
+        params[k] = v
+      end
+    end
+    params
+  end
+
   def url_for(url_fragment, mode=nil, options = nil)
     if mode.is_a? Hash
       options = mode

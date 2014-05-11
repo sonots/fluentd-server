@@ -1,4 +1,4 @@
-## Fluentd Server
+# Fluentd Server
 
 [![Build Status](https://secure.travis-ci.org/sonots/fluentd-server.png?branch=master)](http://travis-ci.org/sonots/fluentd-server)
 [![Coverage Status](https://coveralls.io/repos/sonots/fluentd-server/badge.png?branch=master)](https://coveralls.io/r/sonots/fluentd-server?branch=master)
@@ -11,7 +11,7 @@ Demo: [http://fluentd-server.herokuapp.com](http://fluentd-server.herokuapp.com)
 
 With Fluentd Server, you can manage fluentd configuration files centrally with `erb`. 
 
-For example, you may create a config whose name is `worker` as:
+For example, you may create a config post whose name is `worker` as:
 
 ```
 <source>
@@ -44,10 +44,10 @@ The `include` directive of fluentd config supports `http`, so write just one lin
 
 ```
 # /etc/fluentd.conf
-include http://fqdn.to.fluentd-server/api/{name}?port=24224
+include http://fqdn.to.fluentd-server/api/:name?port=24224
 ```
 
-so that it will download the real configuration from the Fluentd Server.
+where :name is the name of your config post, so that it will download the real configuration from the Fluentd Server.
 
 ## Installation
 
@@ -100,6 +100,10 @@ HOST=0.0.0.0
 # LOG_LEVEL=warn
 ```
 
+## HTTP API
+
+See [API.md](API.md).
+
 ## ToDo
 
 * Handling burst accesses
@@ -111,11 +115,6 @@ HOST=0.0.0.0
 
   * Rather, saving and loading conf from local files would be nice because it makes possible to manage conf with git
   * Fluentd Server should cache them on memory, and refresh caches by detecting files are updated
-
-* Supporting an array and a hash with API as query parameters
-
-  * One may want to use variables of an array or a hash in erb
-  * Write API reference
 
 ## ChangeLog
 
