@@ -105,9 +105,9 @@ See [API.md](API.md).
 
 ## ToDo
 
-* Exporting conf
+* Local file storage
 
-  * Rather, saving and loading conf from local files would be nice because it makes possible to manage conf with git
+  * Saving and loading conf from localfiles rather than DB would be nice because it makes possible to manage conf with git
   * Fluentd Server should cache them on memory, and refresh caches by detecting files are updated
 
 ## ChangeLog
