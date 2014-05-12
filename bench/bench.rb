@@ -15,7 +15,8 @@ def main
   duration = elapsed_time do 
     Parallel.each_with_index([name]*requests, :in_processes => concurrency) do |name, i|
       puts "processing #{i}" if i % 1000 == 0
-      client.get(name)
+      res = client.get(name)
+      puts 'error' unless res.code == '200'
     end
   end
 

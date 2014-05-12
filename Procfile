@@ -1,1 +1,1 @@
-web: bundle exec unicorn -E production -p $PORT -o $HOST
+web: bundle exec unicorn -c unicorn.conf -E production -p $PORT -o $HOST
