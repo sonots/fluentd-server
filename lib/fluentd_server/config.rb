@@ -5,10 +5,6 @@ require 'dotenv'
 Dotenv.load
 
 module FluentdServer::Config
-  def self.data_dir
-    ENV.fetch('DATA_DIR', 'data')
-  end
-
   def self.database_url
     ENV.fetch('DATABASE_URL', 'sqlite3:data/fluentd_server.db')
   end

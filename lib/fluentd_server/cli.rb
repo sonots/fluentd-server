@@ -16,7 +16,6 @@ class FluentdServer::CLI < Thor
   DEFAULT_DOTENV =<<-EOS
 PORT=5126
 HOST=0.0.0.0
-DATA_DIR=#{DATA_DIR}
 DATABASE_URL=sqlite3:#{DATA_DIR}/fluentd_server.db
 LOG_PATH=#{LOG_FILE}
 LOG_LEVEL=warn
