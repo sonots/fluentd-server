@@ -14,4 +14,4 @@ coverage
 pkg/*
 data/*
 log/*
-fluentd_server/*
+fluentd-server/*

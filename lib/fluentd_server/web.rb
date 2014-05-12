@@ -51,11 +51,13 @@ class FluentdServer::Web < Sinatra::Base
   get "/posts/:id/edit" do
     @title = 'Edit'
     @post = Post.find(params[:id])
+    return 404 unless @post
     slim :"posts/edit"
   end
 
   post "/posts/:id" do
     @post = Post.find(params[:id])
+    return 404 unless @post
     if @post.update(params[:post])
       redirect "/posts/#{@post.id}/edit", :notice => @post.decorate.success_message
     else
@@ -73,6 +75,7 @@ class FluentdServer::Web < Sinatra::Base
   # get post in json
   get "/json/:name" do
     @post = Post.find_by(name: params[:name])
+    return 404 unless @post
     content_type :json
     @post.to_json
   end
@@ -80,6 +83,7 @@ class FluentdServer::Web < Sinatra::Base
   # render api
   get "/api/:name" do
     @post = Post.find_by(name: params[:name])
+    return 404 unless @post
     query_params = parse_query(request.query_string)
     content_type :text
     @post.decorate.render_body(query_params)

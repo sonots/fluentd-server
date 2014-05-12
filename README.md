@@ -105,11 +105,6 @@ See [API.md](API.md).
 
 ## ToDo
 
-* Handling burst accesses
-
-  * Restarting the entire fluentd cluster burstly accesses to Fluentd Server. 
-  * Using puma would be better than using unicorn?
-
 * Exporting conf
 
   * Rather, saving and loading conf from local files would be nice because it makes possible to manage conf with git
