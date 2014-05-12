@@ -12,6 +12,7 @@ class FluentdServer::CLI < Thor
   PROCFILE = File.join(BASE_DIR, "Procfile")
   CONFIGRU_FILE = File.join(BASE_DIR, "config.ru")
   DB_DIR = File.join(BASE_DIR, "db")
+  CONFIG_DIR= File.join(BASE_DIR, "config")
 
   DEFAULT_DOTENV =<<-EOS
 PORT=5126
@@ -22,7 +23,7 @@ LOG_LEVEL=warn
 EOS
 
   DEFAULT_PROCFILE =<<-EOS
-web: unicorn -E production -p $PORT -o $HOST
+web: unicorn -E production -p $PORT -o $HOST -c config/unicorn.conf
 EOS
 
   default_command :start
@@ -32,10 +33,9 @@ EOS
     FileUtils.mkdir_p(LOG_DIR)
     File.write ENV_FILE, DEFAULT_DOTENV
     File.write PROCFILE, DEFAULT_PROCFILE
-    configru_file = File.expand_path("../../../config.ru", __FILE__)
-    FileUtils.cp(configru_file, CONFIGRU_FILE)
-    db_dir = File.expand_path("../../../db", __FILE__)
-    FileUtils.cp_r(db_dir, DB_DIR)
+    FileUtils.cp(File.expand_path("../../../config.ru", __FILE__), CONFIGRU_FILE)
+    FileUtils.cp_r(File.expand_path("../../../db", __FILE__), DB_DIR)
+    FileUtils.cp_r(File.expand_path("../../../config", __FILE__), CONFIG_DIR)
     puts 'fluentd-server new finished.'
   end
 

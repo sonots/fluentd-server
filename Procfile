@@ -1,1 +1,1 @@
-web: bundle exec puma -e production -p $PORT -t 8:32 -w 12 --preload
+web: bundle exec unicorn -E production -p $PORT -o $HOST -c unicorn.conf
