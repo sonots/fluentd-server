@@ -1,4 +1,4 @@
-The conf body as followings, would be too small to evaluate:
+Take benchmark of `/api/:name`. The conf body is as following:
 
 ```
 <source>
