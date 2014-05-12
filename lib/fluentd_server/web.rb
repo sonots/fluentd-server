@@ -65,6 +65,16 @@ class FluentdServer::Web < Sinatra::Base
     end
   end
 
+  # delete post
+  get "/posts/:name/delete" do
+    @post = Post.find_by(name: params[:name])
+    if @post.destroy
+      redirect "/", :notice => @post.decorate.success_message
+    else
+      redirect "/", :error => @post.decorate.error_message
+    end
+  end
+
   # get ALL posts in json
   get "/json/list" do
     @posts = Post.order("id ASC")
