@@ -49,6 +49,11 @@ describe 'Web' do
       expect(edit.name).to eql('bbbb')
       expect(edit.body).to eql('bbbb')
     end
+
+    it 'delete' do
+      click_link('Delete')
+      expect{Post.find(post.id)}.to raise_error
+    end
   end
 end
 
