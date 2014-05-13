@@ -1,34 +1,41 @@
 require 'sinatra'
-require 'sinatra/activerecord'
 require 'fluentd_server/config'
 require 'fluentd_server/logger'
 
-configure do
-  set :show_exceptions, true
-  ActiveRecord::Base.logger = FluentdServer.logger
-  I18n.enforce_available_locales = false
-end
-
-configure :production, :development do
-  if FluentdServer::Config.database_url.start_with?('sqlite')
-    set :database, FluentdServer::Config.database_url 
+def configure_database(database_url)
+  if database_url.start_with?('file')
+    uri = URI.parse(database_url)
+    FluentdServer::Config.data_dir = uri.path[1..-1]
   else
-    # DATABASE_URL => "postgres://randuser:randpass@randhost:randport/randdb" on heroku
-    db = URI.parse(FluentdServer::Config.database_url)
-    ActiveRecord::Base.establish_connection(
-      :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
-      :host     => db.host,
-      :username => db.user,
-      :password => db.password,
-      :database => db.path[1..-1],
-      :encoding => 'utf8'
-    )
+    require 'sinatra/activerecord'
+    ActiveRecord::Base.logger = FluentdServer.logger
+    I18n.enforce_available_locales = false
+
+    if database_url.start_with?('sqlite')
+      set :database, database_url
+    else
+      db = URI.parse(database_url)
+      ActiveRecord::Base.establish_connection(
+        # heroku sets DATABASE_URL like postgres://...
+        :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
+        :host     => db.host,
+        :username => db.user,
+        :password => db.password,
+        :database => db.path[1..-1],
+        :encoding => 'utf8'
+      )
+    end
   end
 end
 
+configure do
+  set :show_exceptions, true
+end
+
+configure :production, :development do
+  configure_database(FluentdServer::Config.database_url)
+end
+
 configure :test do
-  ActiveRecord::Base.establish_connection(
-    :adapter  => 'sqlite3',
-    :database => ':memory'
-  )
+  configure_database(FluentdServer::Config.test_database_url)
 end

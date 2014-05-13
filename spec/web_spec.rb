@@ -35,18 +35,18 @@ describe 'Web' do
   context 'edit post' do
     before { Post.create(name: 'aaaa', body: 'aaaa') }
     let(:post) { Post.first }
-    before { visit "/posts/#{post.id}/edit" }
+    before { visit "/posts/#{post.name}/edit" }
 
     it 'visit' do
       page.status_code.should == 200
     end
 
     it 'edit' do
-      fill_in "post[name]", with: 'bbbb'
+      fill_in "post[name]", with: 'aaaa'
       fill_in "post[body]", with: 'bbbb'
       click_button('Submit')
-      edit = Post.find(post.id)
-      expect(edit.name).to eql('bbbb')
+      edit = Post.find_by(name: post.name)
+      expect(edit.name).to eql('aaaa')
       expect(edit.body).to eql('bbbb')
     end
 

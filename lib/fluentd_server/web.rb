@@ -22,7 +22,6 @@ class FluentdServer::Web < Sinatra::Base
   enable :sessions
   register Sinatra::Flash
   helpers Sinatra::RedirectWithFlash
-  register Sinatra::ActiveRecordExtension
 
   # get ALL posts
   get "/" do
@@ -41,27 +40,25 @@ class FluentdServer::Web < Sinatra::Base
   post "/posts" do
     @post = Post.new(params[:post])
     if @post.save
-      redirect "posts/#{@post.id}/edit", :notice => @post.decorate.success_message
+      redirect "posts/#{@post.name}/edit", :notice => @post.decorate.success_message
     else
       redirect "posts/create", :error => @post.decorate.error_message
     end
   end
 
   # edit post
-  get "/posts/:id/edit" do
+  get "/posts/:name/edit" do
     @title = 'Edit'
-    @post = Post.find(params[:id])
-    return 404 unless @post
+    @post = Post.find_by(name: params[:name])
     slim :"posts/edit"
   end
 
-  post "/posts/:id" do
-    @post = Post.find(params[:id])
-    return 404 unless @post
+  post "/posts/:name" do
+    @post = Post.find_by(name: params[:name])
     if @post.update(params[:post])
-      redirect "/posts/#{@post.id}/edit", :notice => @post.decorate.success_message
+      redirect "/posts/#{@post.name}/edit", :notice => @post.decorate.success_message
     else
-      redirect "/posts/#{@post.id}/edit", :error => @post.decorate.error_message
+      redirect "/posts/#{@post.name}/edit", :error => @post.decorate.error_message
     end
   end
 
@@ -77,7 +74,7 @@ class FluentdServer::Web < Sinatra::Base
 
   # get ALL posts in json
   get "/json/list" do
-    @posts = Post.order("id ASC")
+    @posts = Post.order("name ASC")
     content_type :json
     @posts.to_json
   end

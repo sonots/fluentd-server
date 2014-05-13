@@ -1,12 +1,12 @@
 h2
   | Edit
 br
-form action=url_for("/posts/#{@post.id}") method="post"
+form action=url_for("/posts/#{@post.name}") method="post"
   .form-group
     label[for="post_name"]
       | Name:
     br
-    input id="post_name" class="form-control" name="post[name]" type="text" value=@post.name
+    input id="post_name" class="form-control" name="post[name]" type="text" value=@post.name readonly="readonly"
   .form-group
     label[for="post_body"]
       | Body:

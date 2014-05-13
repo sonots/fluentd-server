@@ -3,3 +3,6 @@ rvm:
   - 2.1
 gemfile:
   - Gemfile
+env:
+  - TEST_DATABASE_URL=file:///data
+  - TEST_DATABASE_URL=sqlite3::memory

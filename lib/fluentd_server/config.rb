@@ -1,10 +1,21 @@
-require 'sinatra'
-require 'sinatra/activerecord'
 require 'fluentd_server'
 require 'dotenv'
 Dotenv.load
 
 module FluentdServer::Config
+  def self.data_dir=(data_dir)
+    @data_dir = data_dir
+  end
+
+  def self.data_dir
+    @data_dir
+  end
+
+  def self.test_database_url
+    # ActiveRecord requires DATABASE_URL to be set
+    ENV['DATABASE_URL'] = ENV.fetch('TEST_DATABASE_URL', 'sqlite3:data/test.db')
+  end
+
   def self.database_url
     ENV.fetch('DATABASE_URL', 'sqlite3:data/fluentd_server.db')
   end
