@@ -47,7 +47,7 @@ The `include` directive of fluentd config supports `http`, so write just one lin
 include http://fqdn.to.fluentd-server/api/:name?port=24224
 ```
 
-where :name is the name of your config post, so that it will download the real configuration from the Fluentd Server.
+so that it will download the real configuration from the Fluentd Server where :name is the name of your post. 
 
 ## Installation
 
@@ -109,6 +109,10 @@ See [API.md](API.md).
 
   * Saving and loading conf from localfiles rather than DB would be nice because it makes possible to manage conf with git
   * Fluentd Server should cache them on memory, and refresh caches by detecting files are updated
+
+* Restart Fluentd processes from Fluentd Server
+
+  * Currently, users must restart fluentd processes manually to reload config
 
 ## ChangeLog
 
