@@ -1,3 +1,4 @@
+ENV['RACK_ENV'] = 'test'
 require 'rubygems'
 require 'rspec'
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
