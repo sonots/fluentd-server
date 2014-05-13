@@ -50,14 +50,14 @@ class FluentdServer::Web < Sinatra::Base
   # edit post
   get "/posts/:id/edit" do
     @title = 'Edit'
-    @post = Post.find(params[:id])
-    return 404 unless @post
+    @post = Post.find_by(id: params[:id])
+    redirect "/" unless @post
     slim :"posts/edit"
   end
 
   post "/posts/:id" do
-    @post = Post.find(params[:id])
-    return 404 unless @post
+    @post = Post.find_by(id: params[:id])
+    redirect "/" unless @post
     if @post.update(params[:post])
       redirect "/posts/#{@post.id}/edit", :notice => @post.decorate.success_message
     else

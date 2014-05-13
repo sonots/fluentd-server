@@ -3,3 +3,6 @@ rvm:
   - 2.1
 gemfile:
   - Gemfile
+env:
+  - DATA_DIR=spec/tmp
+  - DATA_DIR=
