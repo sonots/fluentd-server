@@ -1,0 +1,30 @@
+javascript:
+  // cancel enterkey event
+  $(document).on('keypress', '[data-provide="typeahead"]', function(ev){
+    if ((ev.which && ev.which === 13) || (ev.keyCode && ev.keyCode === 13)) {
+      return false;
+    } else {
+      return true;
+    }
+  });
+  // <a data-method="post"></a>
+  $(document).on('click', 'a[data-method="post"], a[data-method="put"], a[data-method="delete"]', function() {
+    var $link = $(this),
+    href = $link.attr('href'),
+    method = $link.data('method'),
+    form = $('<form method="post" action="' + href + '"></form>'),
+    metadata_input = '<input name="_method" value="' + method + '" type="hidden" />';
+
+    if($link.attr("disabled")) {
+      return false;
+    }
+
+    if($link.data("confirm")){
+      if(!window.confirm('Really?'))
+        return false;
+    }
+
+    form.hide().append(metadata_input).appendTo('body');
+    form.submit();
+    return false;
+  });

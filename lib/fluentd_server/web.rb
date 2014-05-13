@@ -66,8 +66,8 @@ class FluentdServer::Web < Sinatra::Base
   end
 
   # delete post
-  get "/posts/:name/delete" do
-    @post = Post.find_by(name: params[:name])
+  post "/posts/:id/delete" do
+    @post = Post.find_by(id: params[:id])
     if @post.destroy
       redirect "/", :notice => @post.decorate.success_message
     else
