@@ -99,16 +99,22 @@ HOST=0.0.0.0
 # LOG_LEVEL=warn
 ```
 
+### DATA_DIR (experimental)
+
+Configure `DATA_DIR` in `.env` file as:
+
+```
+DATA_DIR=data
+```
+
+to use the file storage feature. This will save and load Fluentd config contents not from DB, but from local files located at the directory `DATA_DIR`.
+This would be useful when you want to manage your config files with git. 
+
 ## HTTP API
 
 See [API.md](API.md).
 
 ## ToDo
-
-* Local file storage
-
-  * Saving and loading conf from localfiles rather than DB would be nice because it makes possible to manage conf with git
-  * Fluentd Server should cache them on memory, and refresh caches by detecting files are updated
 
 * Restart Fluentd processes from Fluentd Server
 
