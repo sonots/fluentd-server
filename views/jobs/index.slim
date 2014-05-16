@@ -1,0 +1,17 @@
+.col-xs-3
+  .well.sidebar-nav
+    ul.nav.nav-list
+      li.nav-header Sidebar
+      li== link_to "Link 1", "/path1"
+      li== link_to "Link 2", "/path2"
+      li== link_to "Link 3", "/path3"
+.col-xs-9
+  == bootstrap_flash
+  h2
+    | Work
+  br
+  a.btn.btn-info data-method="post" data-confirm="true" href=url_for("/jobs/status")
+    | Status
+  | &nbsp;
+  a.btn.btn-danger data-method="post" data-confirm="true" href=url_for("/jobs/restart")
+    | Restart

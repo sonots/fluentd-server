@@ -98,4 +98,9 @@ class FluentdServer::Web < Sinatra::Base
     content_type :text
     @post.decorate.render_body(query_params)
   end
+
+  # job view
+  get "/jobs" do
+    slim :"jobs/index", layout: :"fluid"
+  end
 end

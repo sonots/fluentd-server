@@ -81,11 +81,27 @@ module FluentdServer::WebHelper
     @tab || 'welcome'
   end
 
-  def active(_tab)
+  def active_if(_tab)
     if tab == _tab
       'active'
     else
       ''
     end
   end
+
+  def link_to(str, path)
+    %Q[<a href="#{escape_html(url_for(path))}">#{escape_html(str)}</a>]
+  end
+
+  def bootstrap_flash
+    slim <<-EOF
+- if flash[:notice]
+  p.alert.alert-success
+    == flash[:notice]
+- if flash[:error]
+  p.alert.alert-danger
+    == flash[:error]
+EOF
+  end
+
 end

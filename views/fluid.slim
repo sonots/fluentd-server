@@ -10,9 +10,10 @@ html[lang="en"]
       |  body { padding-top: 75px; } .starter-template { padding: 40px 15px; text-align: center; } .container { max-width:1000px; } 
   body
     == slim :'_navbar'
-    .container
-      == bootstrap_flash
-      == yield
+
+    .container-fluid
+      .row
+        == yield
     script[src=url_for("/js/jquery-1.10.2.min.js")]
     script[src=url_for("/js/bootstrap.min.js")]
     == slim :'_js'

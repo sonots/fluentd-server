@@ -1,5 +1,5 @@
 .navbar.navbar-inverse.navbar-fixed-top
-  .container
+  .container-fluid
     .navbar-header
       button.navbar-toggle[type="button" data-toggle="collapse" data-target=".navbar-collapse"]
         span.icon-bar
@@ -9,7 +9,9 @@
         | Fluentd Server
     .collapse.navbar-collapse
       ul.nav.navbar-nav
-        li[class=active('create')]
+        li[class=active_if('create')]
           a[href="/posts/create"]
             | New
-
+        li[class=active_if('job')]
+          a[href="/jobs"]
+            | Work
