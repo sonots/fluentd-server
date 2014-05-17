@@ -107,10 +107,10 @@ Configure `DATA_DIR` in `.env` file as:
 DATA_DIR=data
 ```
 
-to use the file storage feature. This will save and load Fluentd config contents not from DB, but from local files located at the directory `DATA_DIR`.
+to store and load Fluentd config contents not from DB, but from local files located at the directory `DATA_DIR`.
 This would be useful when you want to manage your config files with git. 
 
-ToDo: Create a worker to synchronize local file contents with db (delete and create entries on db). 
+ToDo: Create a worker to synchronize local file existences with db (delete and create entries on db). 
 
 ## HTTP API
 
