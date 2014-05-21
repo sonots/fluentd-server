@@ -1,0 +1,20 @@
+.col-xs-3
+  a.btn.btn-danger data-method="post" data-confirm="true" href=url_for("/task/restart")
+    | Restart
+  | &nbsp;
+  a.btn.btn-info data-method="post" data-confirm="true" href=url_for("/task/status")
+    | Status
+  br
+  br
+  ul.nav.nav-pills.nav-stacked
+    - for task in @tasks do
+      - if @task and @task.id == task.id
+        li.active== task.decorate.link_to
+      - else
+        li== task.decorate.link_to
+.col-xs-9
+  == bootstrap_flash
+  - if @task
+    pre
+      == @task.body
+

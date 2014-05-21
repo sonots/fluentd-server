@@ -10,7 +10,6 @@ require 'fluentd_server/model'
 require 'fluentd_server/decorator'
 require 'fluentd_server/logger'
 require 'fluentd_server/web_helper'
-require 'fluentd_server/task'
 
 class FluentdServer::Web < Sinatra::Base
   include FluentdServer::Logger
@@ -100,21 +99,34 @@ class FluentdServer::Web < Sinatra::Base
     @post.decorate.render_body(query_params)
   end
 
-  # list job view
-  get "/jobs" do
-    @jobs = Delayed::Job.all
-    slim :"jobs/index", layout: :"fluid"
+  # list task
+  get "/tasks" do
+    @tab = 'tasks'
+    @title = 'Show Task'
+    @tasks = Task.limit(20).order("id DESC")
+    slim :"tasks/show", layout: :"fluid"
   end
 
-  # restart job
+  # show task
+  get "/tasks/:id" do
+    @tab = 'tasks'
+    @title = 'Show Task'
+    @tasks = Task.limit(20).order("id DESC")
+    @task = Task.find_by(id: params[:id])
+    slim :"tasks/show", layout: :"fluid"
+  end
+
+  # restart task
   post "/task/restart" do
-    ::Task.new.restart
-    redirect "/jobs", :notice => "`serf event td-agent-restart` issued"
+    @task = ::Task.create
+    @task.restart
+    redirect "/tasks/#{@task.id}"
   end
 
-  # status job
+  # status task
   post "/task/status" do
-    ::Task.new.status
-    redirect "/jobs", :notice => "`serf query td-agent-status` issued"
+    @task = ::Task.create
+    @task.status
+    redirect "/tasks/#{@task.id}"
   end
 end

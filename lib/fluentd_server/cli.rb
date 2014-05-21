@@ -41,6 +41,7 @@ EOS
 
   desc "init", "Creates database schema"
   def init
+    Dotenv.load
     require 'fluentd_server/environment'
     require 'rake'
     require 'sinatra/activerecord/rake'
@@ -61,7 +62,6 @@ EOS
     Dotenv.load
     require 'delayed_job'
     require 'fluentd_server/model'
-    require 'fluentd_server/task'
     worker_options = {
       :min_priority => ENV['MIN_PRIORITY'],
       :max_priority => ENV['MAX_PRIORITY'],
