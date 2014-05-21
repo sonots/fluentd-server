@@ -1,6 +1,6 @@
 require 'sinatra/activerecord'
 require 'sinatra/decorator'
-require 'fluentd_server/environments'
+require 'fluentd_server/environment'
 require 'ext/activerecord/acts_as_file'
 
 class Post < ActiveRecord::Base

@@ -5,7 +5,7 @@ require 'slim'
 
 require 'fluentd_server'
 require 'fluentd_server/config'
-require 'fluentd_server/environments'
+require 'fluentd_server/environment'
 require 'fluentd_server/model'
 require 'fluentd_server/decorator'
 require 'fluentd_server/logger'

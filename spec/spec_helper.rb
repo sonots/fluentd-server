@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 require 'fluentd_server'
 require 'pry'
 
-require 'fluentd_server/environments'
+require 'fluentd_server/environment'
 require 'rake'
 require 'sinatra/activerecord/rake'
 Rake::Task['db:migrate'].invoke

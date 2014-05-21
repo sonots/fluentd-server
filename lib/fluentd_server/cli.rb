@@ -41,7 +41,7 @@ EOS
 
   desc "init", "Creates database schema"
   def init
-    require 'fluentd_server/environments'
+    require 'fluentd_server/environment'
     require 'rake'
     require 'sinatra/activerecord/rake'
     Rake::Task['db:migrate'].invoke
