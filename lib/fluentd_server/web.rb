@@ -10,6 +10,7 @@ require 'fluentd_server/model'
 require 'fluentd_server/decorator'
 require 'fluentd_server/logger'
 require 'fluentd_server/web_helper'
+require 'fluentd_server/task'
 
 class FluentdServer::Web < Sinatra::Base
   include FluentdServer::Logger
@@ -99,8 +100,9 @@ class FluentdServer::Web < Sinatra::Base
     @post.decorate.render_body(query_params)
   end
 
-  # job view
+  # list job view
   get "/jobs" do
+    @jobs = Delayed::Job.all
     slim :"jobs/index", layout: :"fluid"
   end
 

@@ -6,8 +6,7 @@ html[lang="en"]
     title
       = "Fluentd Server - #{title}"
     link[href=url_for("/css/bootstrap.min.css") rel="stylesheet"]
-    style
-      |  body { padding-top: 75px; } .starter-template { padding: 40px 15px; text-align: center; } .container { max-width:1000px; } 
+    == slim :'_style'
   body
     == slim :'_navbar'
     .container

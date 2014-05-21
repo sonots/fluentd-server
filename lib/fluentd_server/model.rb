@@ -21,3 +21,8 @@ class Post < ActiveRecord::Base
   end
 end
 
+module Delayed; end
+class Delayed::Job < ActiveRecord::Base
+  self.table_name = 'delayed_jobs'
+  include Sinatra::Decorator::Decoratable
+end

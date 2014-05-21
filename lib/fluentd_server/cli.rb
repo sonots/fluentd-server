@@ -55,6 +55,30 @@ EOS
     Foreman::CLI.new.invoke(:start, [], {})
   end
 
+  # reference: https://gist.github.com/robhurring/732327
+  desc "job", "Sartup fluentd_server job worker"
+  def job
+    Dotenv.load
+    require 'delayed_job'
+    require 'fluentd_server/model'
+    require 'fluentd_server/task'
+    worker_options = {
+      :min_priority => ENV['MIN_PRIORITY'],
+      :max_priority => ENV['MAX_PRIORITY'],
+      :queues => (ENV['QUEUES'] || ENV['QUEUE'] || '').split(','),
+      :quiet => false
+    }
+    Delayed::Worker.new(worker_options).start
+  end
+
+  desc "job_clear", "Clear fluentd_server delayed_job queue"
+  def job_clear
+    Dotenv.load
+    require 'delayed_job'
+    require 'fluentd_server/model'
+    Delayed::Job.delete_all
+  end
+
   no_tasks do
     def abort(msg)
       $stderr.puts msg

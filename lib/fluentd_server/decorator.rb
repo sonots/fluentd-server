@@ -1,4 +1,5 @@
 require 'sinatra/decorator'
+require 'fluentd_server/web_helper'
 
 class PostDecorator < Sinatra::Decorator::Base
   include Rack::Utils
@@ -19,3 +20,12 @@ class PostDecorator < Sinatra::Decorator::Base
   end
 end
 
+class Delayed::Backend::ActiveRecord::JobDecorator < Sinatra::Decorator::Base
+  include FluentdServer::WebHelper
+
+  def link_to
+    %Q[<a href="#{escape_html("/jobs/#{self.id}")}">
+      <span class="label label-success">&nbsp;</span> ##{escape_html(self.id)}
+    </a>]
+  end
+end

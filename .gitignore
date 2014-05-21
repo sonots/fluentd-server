@@ -16,3 +16,4 @@ data/*
 log/*
 fluentd-server/*
 spec/tmp
+jobs/*
