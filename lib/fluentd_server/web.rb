@@ -103,4 +103,16 @@ class FluentdServer::Web < Sinatra::Base
   get "/jobs" do
     slim :"jobs/index", layout: :"fluid"
   end
+
+  # restart job
+  post "/task/restart" do
+    ::Task.new.restart
+    redirect "/jobs", :notice => "`serf event td-agent-restart` issued"
+  end
+
+  # status job
+  post "/task/status" do
+    ::Task.new.status
+    redirect "/jobs", :notice => "`serf query td-agent-status` issued"
+  end
 end
