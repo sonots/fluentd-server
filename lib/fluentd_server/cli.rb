@@ -45,7 +45,11 @@ EOS
     require 'fluentd_server/environment'
     require 'rake'
     require 'sinatra/activerecord/rake'
-    Rake::Task['db:migrate'].invoke
+    # ToDo: Fix that db:migrate raises an error in the case of sqlite3 like
+    # SQLite3::SQLException: database schema has changed: INSERT INTO "schema_migrations" ("version") VALUES (?)
+    # Rake::Task['db:migrate'].invoke
+    # Use db:schema:load after generating db/schema.rb by executing db:migrate several times for now
+    Rake::Task['db:schema:load'].invoke
     puts 'fluentd-server init finished.'
   end
 
