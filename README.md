@@ -120,6 +120,7 @@ See [API.md](API.md).
 * Refresh the task result view progressively using ajax for serf query td-agent-status
 * Auto cleanup of old tasks (if number of tasks exceed a specified value, remove old tasks)
 * Auto-restart in each interval if conf is updated (is this useful??)
+* Read db/schema.rb from gem
 
 ## ChangeLog
 
