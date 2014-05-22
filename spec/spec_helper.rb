@@ -8,7 +8,7 @@ require 'pry'
 require 'fluentd_server/environment'
 require 'rake'
 require 'sinatra/activerecord/rake'
-Rake::Task['db:migrate'].invoke
+Rake::Task['db:schema:load'].invoke
 
 if ENV['TRAVIS']
   require 'coveralls'

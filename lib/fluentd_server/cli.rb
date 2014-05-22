@@ -41,10 +41,15 @@ EOS
 
   desc "init", "Creates database schema"
   def init
+    Dotenv.load
     require 'fluentd_server/environment'
     require 'rake'
     require 'sinatra/activerecord/rake'
-    Rake::Task['db:migrate'].invoke
+    # ToDo: Fix that db:migrate raises an error in the case of sqlite3 like
+    # SQLite3::SQLException: database schema has changed: INSERT INTO "schema_migrations" ("version") VALUES (?)
+    # Rake::Task['db:migrate'].invoke
+    # Use db:schema:load after generating db/schema.rb by executing db:migrate several times for now
+    Rake::Task['db:schema:load'].invoke
     puts 'fluentd-server init finished.'
   end
 
@@ -53,6 +58,29 @@ EOS
     Dotenv.load
     require "foreman/cli"
     Foreman::CLI.new.invoke(:start, [], {})
+  end
+
+  # reference: https://gist.github.com/robhurring/732327
+  desc "job", "Sartup fluentd_server job worker"
+  def job
+    Dotenv.load
+    require 'delayed_job'
+    require 'fluentd_server/model'
+    worker_options = {
+      :min_priority => ENV['MIN_PRIORITY'],
+      :max_priority => ENV['MAX_PRIORITY'],
+      :queues => (ENV['QUEUES'] || ENV['QUEUE'] || '').split(','),
+      :quiet => false
+    }
+    Delayed::Worker.new(worker_options).start
+  end
+
+  desc "job_clear", "Clear fluentd_server delayed_job queue"
+  def job_clear
+    Dotenv.load
+    require 'delayed_job'
+    require 'fluentd_server/model'
+    Delayed::Job.delete_all
   end
 
   no_tasks do

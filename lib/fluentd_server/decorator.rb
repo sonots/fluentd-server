@@ -1,4 +1,5 @@
 require 'sinatra/decorator'
+require 'fluentd_server/web_helper'
 
 class PostDecorator < Sinatra::Decorator::Base
   include Rack::Utils
@@ -19,3 +20,12 @@ class PostDecorator < Sinatra::Decorator::Base
   end
 end
 
+class TaskDecorator < Sinatra::Decorator::Base
+  include FluentdServer::WebHelper
+
+  def link_to
+    %Q[<a href="#{h("/tasks/#{self.id}")}">
+      <span class="label label-success">&nbsp;</span> ##{h(self.id)} #{h(self.name)}
+    </a>]
+  end
+end

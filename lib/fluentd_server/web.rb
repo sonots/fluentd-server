@@ -98,4 +98,35 @@ class FluentdServer::Web < Sinatra::Base
     content_type :text
     @post.decorate.render_body(query_params)
   end
+
+  # list task
+  get "/tasks" do
+    @tab = 'tasks'
+    @title = 'Show Task'
+    @tasks = Task.limit(20).order("id DESC")
+    slim :"tasks/show", layout: :"fluid"
+  end
+
+  # show task
+  get "/tasks/:id" do
+    @tab = 'tasks'
+    @title = 'Show Task'
+    @tasks = Task.limit(20).order("id DESC")
+    @task = Task.find_by(id: params[:id])
+    slim :"tasks/show", layout: :"fluid"
+  end
+
+  # restart task
+  post "/task/restart" do
+    @task = ::Task.create(name: 'Restart')
+    @task.restart
+    redirect "/tasks/#{@task.id}"
+  end
+
+  # status task
+  post "/task/status" do
+    @task = ::Task.create(name: 'Status')
+    @task.status
+    redirect "/tasks/#{@task.id}"
+  end
 end

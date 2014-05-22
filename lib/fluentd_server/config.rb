@@ -9,6 +9,10 @@ module FluentdServer::Config
     ENV['DATA_DIR'] == "" ? nil : ENV['DATA_DIR']
   end
 
+  def self.job_dir
+    ENV.fetch('JOB_DIR', 'jobs')
+  end
+
   def self.database_url
     ENV.fetch('DATABASE_URL', 'sqlite3:data/fluentd_server.db')
   end

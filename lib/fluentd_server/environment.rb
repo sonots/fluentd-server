@@ -3,6 +3,8 @@ require 'sinatra/activerecord'
 require 'fluentd_server/config'
 require 'fluentd_server/logger'
 
+ROOT = File.expand_path('../../..', __FILE__)
+
 configure do
   set :show_exceptions, true
   ActiveRecord::Base.logger = FluentdServer.logger
@@ -31,4 +33,18 @@ configure :test do
     :adapter  => 'sqlite3',
     :database => ':memory:'
   )
+end
+
+# Configure DelayedJob
+require 'delayed_job'
+configure do
+  Delayed::Worker.backend = :active_record # This defines Delayed::Job model
+  Delayed::Worker.logger = FluentdServer.logger
+end
+
+configure :development, :test do
+  Delayed::Worker.destroy_failed_jobs = true
+  Delayed::Worker.sleep_delay = 5
+  Delayed::Worker.max_attempts = 5
+  Delayed::Worker.max_run_time = 5.minutes
 end
