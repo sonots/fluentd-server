@@ -24,8 +24,8 @@ class TaskDecorator < Sinatra::Decorator::Base
   include FluentdServer::WebHelper
 
   def link_to
-    %Q[<a href="#{escape_html("/tasks/#{self.id}")}">
-      <span class="label label-success">&nbsp;</span> ##{escape_html(self.id)}
+    %Q[<a href="#{h("/tasks/#{self.id}")}">
+      <span class="label label-success">&nbsp;</span> ##{h(self.id)} #{h(self.name)}
     </a>]
   end
 end

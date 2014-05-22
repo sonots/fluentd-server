@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 3) do
   add_index "posts", ["name"], name: "index_posts_on_name", unique: true
 
   create_table "tasks", force: true do |t|
+    t.string   "name"
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
