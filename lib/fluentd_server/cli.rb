@@ -11,7 +11,6 @@ class FluentdServer::CLI < Thor
   ENV_FILE = File.join(BASE_DIR, ".env")
   PROCFILE = File.join(BASE_DIR, "Procfile")
   CONFIGRU_FILE = File.join(BASE_DIR, "config.ru")
-  DB_DIR = File.join(BASE_DIR, "db")
   CONFIG_DIR= File.join(BASE_DIR, "config")
 
   DEFAULT_DOTENV =<<-EOS
@@ -28,13 +27,16 @@ EOS
 
   default_command :start
 
+  def initialize(args = [], opts = [], config = {})
+    super(args, opts, config)
+  end
+
   desc "new", "Creates fluentd-server resource directory"
   def new
     FileUtils.mkdir_p(LOG_DIR)
     File.write ENV_FILE, DEFAULT_DOTENV
     File.write PROCFILE, DEFAULT_PROCFILE
     FileUtils.cp(File.expand_path("../../../config.ru", __FILE__), CONFIGRU_FILE)
-    FileUtils.cp_r(File.expand_path("../../../db", __FILE__), DB_DIR)
     FileUtils.cp_r(File.expand_path("../../../config", __FILE__), CONFIG_DIR)
     puts 'fluentd-server new finished.'
   end
@@ -45,6 +47,8 @@ EOS
     require 'fluentd_server/environment'
     require 'rake'
     require 'sinatra/activerecord/rake'
+    ActiveRecord::Tasks::DatabaseTasks.db_dir = File.expand_path("../../../db", __FILE__)
+    ActiveRecord::Tasks::DatabaseTasks.migrations_paths = [File.expand_path("../../../db/migrate", __FILE__)]
     # ToDo: Fix that db:migrate raises an error in the case of sqlite3 like
     # SQLite3::SQLException: database schema has changed: INSERT INTO "schema_migrations" ("version") VALUES (?)
     # Rake::Task['db:migrate'].invoke
@@ -53,9 +57,20 @@ EOS
     puts 'fluentd-server init finished.'
   end
 
+  desc "migrate", "Migrate database schema"
+  def migrate
+    Dotenv.load
+    require 'fluentd_server/environment'
+    require 'rake'
+    require 'sinatra/activerecord/rake'
+    ActiveRecord::Tasks::DatabaseTasks.db_dir = File.expand_path("../../../db", __FILE__)
+    ActiveRecord::Tasks::DatabaseTasks.migrations_paths = [File.expand_path("../../../db/migrate", __FILE__)]
+    Rake::Task['db:migrate'].invoke
+  end
+
   desc "start", "Sartup fluentd_server"
   def start
-    Dotenv.load
+    self.migrate # do migration before start not to forget on updation
     require "foreman/cli"
     Foreman::CLI.new.invoke(:start, [], {})
   end
