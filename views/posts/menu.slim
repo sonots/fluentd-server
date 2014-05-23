@@ -1,0 +1,7 @@
+== @post.decorate.create_button
+ul.nav.nav-pills.nav-stacked
+  - for post in @posts do
+    - if @post and @post.id == post.id
+      li.active== post.decorate.link_to
+    - else
+      li== post.decorate.link_to

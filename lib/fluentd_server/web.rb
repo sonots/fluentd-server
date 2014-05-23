@@ -24,18 +24,12 @@ class FluentdServer::Web < Sinatra::Base
   helpers Sinatra::RedirectWithFlash
   register Sinatra::ActiveRecordExtension
 
-  # get ALL posts
-  get "/" do
-    @posts = Post.order("name ASC")
-    slim :"posts/index"
-  end
-
   # create new post
-  get "/posts/create" do
-    @tab = 'create'
-    @title = 'Create'
+  get %r{^/$|^/posts/create$} do
+    @tab = 'posts'
+    @posts = Post.order("name ASC")
     @post = Post.new
-    slim :"posts/create"
+    slim :"posts/layout"
   end
 
   post "/posts" do
@@ -49,10 +43,11 @@ class FluentdServer::Web < Sinatra::Base
 
   # edit post
   get "/posts/:id/edit" do
-    @title = 'Edit'
+    @tab = 'posts'
     @post = Post.find_by(id: params[:id])
     redirect "/" unless @post
-    slim :"posts/edit"
+    @posts = Post.order("name ASC")
+    slim :"posts/layout"
   end
 
   post "/posts/:id" do
@@ -69,9 +64,9 @@ class FluentdServer::Web < Sinatra::Base
   post "/posts/:id/delete" do
     @post = Post.find_by(id: params[:id])
     if @post.destroy
-      redirect "/", :notice => @post.decorate.success_message
+      redirect "/posts/create", :notice => @post.decorate.success_message
     else
-      redirect "/", :error => @post.decorate.error_message
+      redirect "/posts/create", :error => @post.decorate.error_message
     end
   end
 
@@ -102,18 +97,16 @@ class FluentdServer::Web < Sinatra::Base
   # list task
   get "/tasks" do
     @tab = 'tasks'
-    @title = 'Show Task'
     @tasks = Task.limit(20).order("id DESC")
-    slim :"tasks/show", layout: :"fluid"
+    slim :"tasks/show"
   end
 
   # show task
   get "/tasks/:id" do
     @tab = 'tasks'
-    @title = 'Show Task'
     @tasks = Task.limit(20).order("id DESC")
     @task = Task.find_by(id: params[:id])
-    slim :"tasks/show", layout: :"fluid"
+    slim :"tasks/show"
   end
 
   # restart task

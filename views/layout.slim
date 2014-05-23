@@ -4,14 +4,15 @@ html[lang="en"]
     meta[charset="utf-8"]
     meta[name="viewport" content="width=device-width, initial-scale=1.0"]
     title
-      = "Fluentd Server - #{title}"
+      | Fluentd Server
     link[href=url_for("/css/bootstrap.min.css") rel="stylesheet"]
     == slim :'_style'
   body
     == slim :'_navbar'
-    .container
-      == bootstrap_flash
-      == yield
+
+    .container-fluid
+      .row
+        == yield
     script[src=url_for("/js/jquery-1.10.2.min.js")]
     script[src=url_for("/js/bootstrap.min.js")]
     == slim :'_js'

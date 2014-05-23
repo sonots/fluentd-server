@@ -1,0 +1,8 @@
+.col-xs-3
+  == slim :'posts/menu'
+.col-xs-9
+  - if @post.new?
+    == slim :'posts/create'
+  - else
+    == slim :'posts/edit'
+

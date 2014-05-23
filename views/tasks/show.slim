@@ -1,11 +1,10 @@
 .col-xs-3
-  a.btn.btn-danger data-method="post" data-confirm="true" href=url_for("/task/restart")
-    | Restart
-  | &nbsp;
-  a.btn.btn-info data-method="post" data-confirm="true" href=url_for("/task/status")
-    | Status
-  br
-  br
+  div[style="padding: 0 0 10px 10px;font-variant:small-caps;"]
+    a.btn.btn-danger.btn-lg data-method="post" data-confirm="true" href=url_for("/task/restart")
+      | Restart
+    | &nbsp;
+    a.btn.btn-info.btn-lg data-method="post" data-confirm="true" href=url_for("/task/status")
+      | Status
   ul.nav.nav-pills.nav-stacked
     - for task in @tasks do
       - if @task and @task.id == task.id

@@ -1,9 +1,0 @@
-ul
-  - @posts.each do |post|
-    li
-      h4
-        a href=url_for("/posts/#{post.id}/edit")
-          = post.name
-      p
-        | Updated: 
-        = post.updated_at

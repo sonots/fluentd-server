@@ -81,12 +81,12 @@ module FluentdServer::WebHelper
     @tab || 'welcome'
   end
 
-  def active_if(_tab)
-    if tab == _tab
-      'active'
-    else
-      ''
-    end
+  def active_if(cond)
+    'active' if cond
+  end
+
+  def disabled_if(cond)
+    'disabled="disabled"' if cond
   end
 
   def link_to(str, path)

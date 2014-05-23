@@ -9,9 +9,9 @@
         | Fluentd Server
     .collapse.navbar-collapse
       ul.nav.navbar-nav
-        li[class=active_if('create')]
+        li[class=active_if(@tab == 'posts')]
           a[href="/posts/create"]
-            | New
-        li[class=active_if('tasks')]
+            | Conf
+        li[class=active_if(@tab == 'tasks')]
           a[href="/tasks"]
             | Task

@@ -22,6 +22,10 @@ class Post < ActiveRecord::Base
 
     acts_as_file :body, :filename => self.instance_method(:filename)
   end
+
+  def new?
+    self.id.nil?
+  end
 end
 
 class Task < ActiveRecord::Base
@@ -36,4 +40,8 @@ class Task < ActiveRecord::Base
   end
 
   acts_as_file :body, :filename => self.instance_method(:filename)
+
+  def new?
+    self.id.nil?
+  end
 end
