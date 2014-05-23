@@ -27,7 +27,7 @@ class PostDecorator < Sinatra::Decorator::Base
 
   def create_button
     %Q[<div style="padding: 0 0 10px 10px;font-variant:small-caps;">
-    <a class="btn btn-default btn-lg #{active_if(self.new?)}" role="button"
+    <a class="btn btn-default #{active_if(self.new?)}" role="button"
     href="/posts/create">Create Config</a></div>]
   end
 end

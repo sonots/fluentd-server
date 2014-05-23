@@ -122,4 +122,12 @@ class FluentdServer::Web < Sinatra::Base
     @task.status
     redirect "/tasks/#{@task.id}"
   end
+
+  # configtest task
+  post "/task/configtest" do
+    @task = ::Task.create(name: 'Configtest')
+    @task.configtest
+    redirect "/tasks/#{@task.id}"
+  end
+
 end

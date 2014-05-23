@@ -6,19 +6,30 @@ module TaskRunner
   end
 
   def restart
-    system(write_header('restart'))
+    system(write_event_header('restart'))
     cmd = serf_event('restart')
     logger.debug "run #{cmd}"
     system(cmd)
   end
  
   def status
-    system(write_header('status'))
+    system(write_query_header('status'))
     self.delay.delayed_status
   end
 
   def delayed_status
     cmd = serf_query('status')
+    logger.debug "run #{cmd}"
+    system(cmd)
+  end
+
+  def configtest
+    system(write_query_header('configtest'))
+    self.delay.delayed_configtest
+  end
+
+  def delayed_configtest
+    cmd = serf_query('configtest')
     logger.debug "run #{cmd}"
     system(cmd)
   end
@@ -35,8 +46,12 @@ module TaskRunner
 
   ## helpers
 
-  def write_header(cmd)
+  def write_event_header(cmd)
     "echo '$ serf event td-agent-#{cmd}' > #{self.filename}"
+  end
+
+  def write_query_header(cmd)
+    "echo '$ serf query td-agent-#{cmd}' > #{self.filename}"
   end
 
   # serf event works asynchronously, so it does not take time
