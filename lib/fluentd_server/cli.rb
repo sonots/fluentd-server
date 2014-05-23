@@ -7,6 +7,7 @@ class FluentdServer::CLI < Thor
   BASE_DIR = File.join(Dir.pwd, "fluentd-server")
   DATA_DIR = File.join(BASE_DIR, "data")
   LOG_DIR = File.join(BASE_DIR, "log")
+  JOB_DIR = File.join(BASE_DIR, "jobs")
   LOG_FILE = File.join(LOG_DIR, "application.log")
   ENV_FILE = File.join(BASE_DIR, ".env")
   PROCFILE = File.join(BASE_DIR, "Procfile")
@@ -17,12 +18,17 @@ class FluentdServer::CLI < Thor
 PORT=5126
 HOST=0.0.0.0
 DATABASE_URL=sqlite3:#{DATA_DIR}/fluentd_server.db
+JOB_DIR=#{JOB_DIR}
 LOG_PATH=#{LOG_FILE}
 LOG_LEVEL=warn
+LOG_SHIFT_AGE=0
+LOG_SHIFT_SIZE=1048576
 EOS
 
   DEFAULT_PROCFILE =<<-EOS
 web: unicorn -E production -p $PORT -o $HOST -c config/unicorn.conf
+job: fluentd-server job
+serf: $(gem path serf-td-agent)/bin/serf agent
 EOS
 
   default_command :start
@@ -34,6 +40,7 @@ EOS
   desc "new", "Creates fluentd-server resource directory"
   def new
     FileUtils.mkdir_p(LOG_DIR)
+    FileUtils.mkdir_p(JOB_DIR)
     File.write ENV_FILE, DEFAULT_DOTENV
     File.write PROCFILE, DEFAULT_PROCFILE
     FileUtils.cp(File.expand_path("../../../config.ru", __FILE__), CONFIGRU_FILE)
