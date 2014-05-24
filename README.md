@@ -95,8 +95,11 @@ The default configuration is as follows:
 PORT=5126
 HOST=0.0.0.0
 # DATABASE_URL=sqlite3:data/fluentd_server.db
-# LOG_PATH=log/application.log
-# LOG_LEVEL=warn
+# JOB_DIR=jobs
+# LOG_PATH=STDOUT
+# LOG_LEVEL=debug
+# LOG_SHIFT_AGE=0
+# LOG_SHIFT_SIZE=1048576
 ```
 
 ### DATA_DIR (experimental)
