@@ -4,6 +4,7 @@ require 'pry'
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 
 ENV['RACK_ENV'] = 'test'
+ENV['JOB_DIR'] = 'spec/tmp'
 
 # NOTE: DATABASE_URL in .env must be commented out
 require 'fluentd_server'
