@@ -5,7 +5,7 @@ require 'capybara/dsl'
 
 Capybara.app = FluentdServer::Web
 
-describe 'Web' do
+describe 'Post' do
   include Capybara::DSL
   after { Post.delete_all }
 
@@ -73,5 +73,85 @@ describe 'Web' do
     end
   end
 end
+
+describe 'Task' do
+  include Capybara::DSL
+  after { Post.delete_all }
+
+  context 'list tasks' do
+    it 'visit' do
+      visit '/tasks'
+      page.status_code.should == 200
+    end
+  end
+
+  context 'show task' do
+    before { @task = Task.create }
+    it 'visit' do
+      visit "/tasks/#{@task.id}"
+      page.status_code.should == 200
+    end
+  end
+
+  context 'task button' do
+    include Rack::Test::Methods
+    def app; FluentdServer::Web; end
+
+    it 'restart' do
+      expect {
+        post "/task/restart"
+      }.to change(Task, :count).by(1)
+    end
+
+    it 'status' do
+      expect {
+        post "/task/status"
+      }.to change(Task, :count).by(1)
+    end
+
+    it 'configtest' do
+      expect {
+        post "/task/configtest"
+      }.to change(Task, :count).by(1)
+    end
+  end
+end
+
+describe 'API' do
+  include Rack::Test::Methods
+
+  def app
+    FluentdServer::Web
+  end
+
+  after { Post.delete_all }
+  before { Post.create(name: 'aaaa', body: '<%= key %>') }
+  let(:post) { Post.first }
+
+  context 'render api' do
+    it 'render' do
+      get "/api/#{post.name}?key=value"
+      expect(last_response.status).to eql(200)
+      expect(last_response.body).to eql('value')
+    end
+  end
+
+  context 'get ALL posts in json' do
+    it 'get' do
+      get "/json/list"
+      body = JSON.parse(last_response.body)
+      expect(body[0]["name"]).to eql('aaaa')
+    end
+  end
+
+  context 'get post in json' do
+    it 'get' do
+      get "/json/#{post.name}"
+      body = JSON.parse(last_response.body)
+      expect(body["name"]).to eql('aaaa')
+    end
+  end
+end
+
 
 

@@ -94,7 +94,7 @@ class FluentdServer::Web < Sinatra::Base
     @post.decorate.render_body(query_params)
   end
 
-  # list task
+  # list tasks
   get "/tasks" do
     @tab = 'tasks'
     @tasks = Task.limit(20).order("id DESC")
