@@ -22,6 +22,21 @@ describe 'WebHelper' do
       )
     end
   end
+
+  context '#escape_url' do
+    it { expect(escape_url('a b')).to eql('a+b') }
+  end
+
+  context '#active_if' do
+    it { expect(active_if(true)).to eql('active') }
+    it { expect(active_if(false)).to be_nil }
+  end
+
+  context '#disabled_if' do
+    it { expect(disabled_if(true)).to eql('disabled="disabled"') }
+    it { expect(disabled_if(false)).to be_nil }
+  end
+
 end
 
 

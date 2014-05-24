@@ -73,24 +73,12 @@ module FluentdServer::WebHelper
     CGI.escape(str)
   end
 
-  def title
-    @title || 'Welcome'
-  end
-
-  def tab
-    @tab || 'welcome'
-  end
-
   def active_if(cond)
     'active' if cond
   end
 
   def disabled_if(cond)
     'disabled="disabled"' if cond
-  end
-
-  def link_to(str, path)
-    %Q[<a href="#{escape_html(url_for(path))}">#{escape_html(str)}</a>]
   end
 
   def bootstrap_flash
