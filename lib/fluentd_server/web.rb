@@ -111,21 +111,21 @@ class FluentdServer::Web < Sinatra::Base
 
   # restart task
   post "/task/restart" do
-    @task = ::Task.create(name: 'Restart')
+    @task = ::Task.create_and_delete(name: 'Restart')
     @task.restart
     redirect "/tasks/#{@task.id}"
   end
 
   # status task
   post "/task/status" do
-    @task = ::Task.create(name: 'Status')
+    @task = ::Task.create_and_delete(name: 'Status')
     @task.status
     redirect "/tasks/#{@task.id}"
   end
 
   # configtest task
   post "/task/configtest" do
-    @task = ::Task.create(name: 'Configtest')
+    @task = ::Task.create_and_delete(name: 'Configtest')
     @task.configtest
     redirect "/tasks/#{@task.id}"
   end

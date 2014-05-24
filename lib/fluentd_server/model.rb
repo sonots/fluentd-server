@@ -44,4 +44,13 @@ class Task < ActiveRecord::Base
   def new?
     self.id.nil?
   end
+
+  def self.create_and_delete(*args)
+    created = self.create(*args)
+    if self.count > FluentdServer::Config.task_max_num
+      oldest = self.first
+      oldest.destroy_with_file
+    end
+    created
+  end
 end

@@ -32,4 +32,8 @@ module FluentdServer::Config
   def self.log_shift_size
     ENV.fetch('LOG_SHIFT_SIZE', '1048576')
   end
+
+  def self.task_max_num
+    ENV.fetch('TASK_MAX_NUM', '20').to_i
+  end
 end

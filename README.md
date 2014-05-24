@@ -118,7 +118,6 @@ See [API.md](API.md).
 
 * Create a sync worker to synchronize local file existences with db (delete and create entries on db). 
 * Refresh the task result view progressively using ajax for serf query td-agent-status
-* Auto cleanup of old tasks (if number of tasks exceed a specified value, remove old tasks)
 * Automatic deployment (restart) support like the one of chef-server
 
 ## ChangeLog
