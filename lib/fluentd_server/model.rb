@@ -20,7 +20,7 @@ class Post < ActiveRecord::Base
       File.join(FluentdServer::Config.data_dir, "#{self.name}.erb") if self.name
     end
 
-    acts_as_file :body, :filename => self.instance_method(:filename)
+    acts_as_file :body => self.instance_method(:filename)
   end
 
   def new?
@@ -39,7 +39,7 @@ class Task < ActiveRecord::Base
     File.join(FluentdServer::Config.job_dir, "#{prefix}_result.txt") if prefix
   end
 
-  acts_as_file :body, :filename => self.instance_method(:filename)
+  acts_as_file :body => self.instance_method(:filename)
 
   def new?
     self.id.nil?

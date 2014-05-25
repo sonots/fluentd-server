@@ -8,7 +8,7 @@ class TestPost < Post
     def filename
       @filename ||= Tempfile.open(self.name) {|f| f.path }.tap {|name| File.unlink(name) }
     end
-    acts_as_file :body, :filename => self.instance_method(:filename)
+    acts_as_file :body => self.instance_method(:filename)
   end
 end
 
