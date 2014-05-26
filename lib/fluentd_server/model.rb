@@ -2,7 +2,7 @@ require 'sinatra/activerecord'
 require 'sinatra/decorator'
 require 'fluentd_server/environment'
 require 'fluentd_server/task_runner'
-require 'ext/activerecord/acts_as_file'
+require 'ext/acts_as_file'
 
 class Delayed::Job < ActiveRecord::Base; end
 
@@ -14,7 +14,7 @@ class Post < ActiveRecord::Base
   validates :body, presence: true
 
   if FluentdServer::Config.data_dir
-    include ActiveRecord::ActsAsFile
+    include ActsAsFile
 
     def filename
       File.join(FluentdServer::Config.data_dir, "#{self.name}.erb") if self.name
@@ -31,7 +31,7 @@ end
 class Task < ActiveRecord::Base
   include Sinatra::Decorator::Decoratable
   include FluentdServer::Logger
-  include ActiveRecord::ActsAsFile
+  include ActsAsFile
   include TaskRunner # task runnable codes are here
 
   def filename

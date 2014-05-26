@@ -1,10 +1,10 @@
 require_relative '../spec_helper'
 require 'fluentd_server/model'
-require 'ext/activerecord/acts_as_file'
+require 'ext/acts_as_file'
 
 class TestPost < Post
-  unless Post.include?(ActiveRecord::ActsAsFile)
-    include ActiveRecord::ActsAsFile
+  unless Post.include?(ActsAsFile)
+    include ActsAsFile
     def filename
       @filename ||= Tempfile.open(self.name) {|f| f.path }.tap {|name| File.unlink(name) }
     end
@@ -12,7 +12,7 @@ class TestPost < Post
   end
 end
 
-describe 'ActiveRecord::ActsAsFile' do
+describe ActsAsFile do
   let(:subject) { TestPost.new(name: 'name') }
   after { TestPost.delete_all }
   after { File.unlink(subject.filename) if File.exist?(subject.filename) }

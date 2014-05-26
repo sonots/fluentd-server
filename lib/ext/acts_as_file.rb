@@ -1,6 +1,4 @@
-module ActiveRecord; end
-
-module ActiveRecord::ActsAsFile
+module ActsAsFile
   def self.included(klass)
     klass.extend(ClassMethods)
   end
