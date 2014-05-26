@@ -17,5 +17,8 @@
 .col-xs-9
   == bootstrap_flash
   - if @task
+    - if !@task.finished?
+      div.alert.alert-info id="progress"
+        | NOW PROCESSING ...
     pre id="out"
       == @task.body

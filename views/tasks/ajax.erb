@@ -11,6 +11,8 @@
       }
       if (data.moreData) {
         setTimeout(function(){fetchNext(e, bytes, url);}, 1000);
+      } else {
+        $("#progress").text("FINISHED");
       }
     });
   }
