@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 3) do
   create_table "tasks", force: true do |t|
     t.string   "name"
     t.text     "body"
+    t.integer  "exit_code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

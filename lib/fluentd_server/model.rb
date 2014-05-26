@@ -41,6 +41,18 @@ class Task < ActiveRecord::Base
 
   acts_as_file :body => self.instance_method(:filename)
 
+  def finished?
+    !self.exit_code.nil?
+  end
+
+  def successful?
+    self.finished? and self.exit_code == 0
+  end
+
+  def error?
+    self.finished? and self.exit_code != 0
+  end
+
   def new?
     self.id.nil?
   end

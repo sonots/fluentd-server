@@ -32,6 +32,17 @@ describe ActsAsFile do
       before { File.write(subject.filename, 'aaaa') }
       its(:body) { should == 'aaaa' }
     end
+
+    context 'seek' do
+      before { File.write(subject.filename, 'abcd') }
+      it { subject.body(1, 2).should == 'bc' }
+    end
+
+    context 'file does not exit' do
+      before { File.unlink(subject.filename) if File.exist?(subject.filename) }
+      it { subject.body.should be_nil }
+      it { subject.body(1, 2).should be_nil }
+    end
   end
   
   context '#save_with_file' do

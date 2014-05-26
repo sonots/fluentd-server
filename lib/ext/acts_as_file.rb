@@ -35,14 +35,25 @@ module ActsAsFile
 
           params.each do |field, filename_instance_method|
             field_name = :"@#{field}"
-            define_method(field) do
-              content = self.instance_variable_get(field_name)
-              return content if content
-              # if (self.updated_at.nil? or File.mtime(filename) > self.updated_at)
-              filename = filename_instance_method.bind(self).call
-              return nil unless filename
-              return nil unless File.exist?(filename)
-              self.instance_variable_set(field_name, File.read(filename))
+            define_method(field) do |offset = nil, length = nil|
+              if offset || length
+                # does not cache in this way
+                filename = filename_instance_method.bind(self).call
+                return nil unless filename
+                return nil unless File.exist?(filename)
+                File.open(filename) do |file|
+                  file.seek(offset) if offset
+                  file.read(length)
+                end
+              else
+                content = self.instance_variable_get(field_name)
+                return content if content
+                # if (self.updated_at.nil? or File.mtime(filename) > self.updated_at)
+                filename = filename_instance_method.bind(self).call
+                return nil unless filename
+                return nil unless File.exist?(filename)
+                self.instance_variable_set(field_name, File.read(filename))
+              end
             end
           end
 

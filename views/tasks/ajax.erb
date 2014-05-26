@@ -1,0 +1,19 @@
+<% if @task and !@task.finished? %>
+<script type="text/javascript">
+  function fetchNext(e, bytes, url) {
+    $.get(
+      url,
+      { offset: bytes }
+    ).done(function(data) {
+      if (data.body != "") {
+        e.append(document.createTextNode(data.body));
+        bytes = bytes + data.bytes;
+      }
+      if (data.moreData) {
+        setTimeout(function(){fetchNext(e, bytes, url);}, 1000);
+      }
+    });
+  }
+  fetchNext($("#out"), <%= @task.body.to_s.bytesize %>, "/json/tasks/<%= @task.id %>/body");
+</script>
+<% end %>
