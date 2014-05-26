@@ -42,5 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "delayed_job_active_record"
   spec.add_runtime_dependency "daemons"
   spec.add_runtime_dependency "serf-td-agent"
+  spec.add_runtime_dependency "acts_as_file"
   # spec.add_runtime_dependency 'sqlite3'
 end

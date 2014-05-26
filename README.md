@@ -120,7 +120,6 @@ See [API.md](API.md).
 ## ToDo
 
 * Create a sync worker to synchronize local file existences with db (delete and create entries on db). 
-* Refresh the task result view progressively using ajax for serf query td-agent-status
 * Automatic deployment (restart) support like the one of chef-server
 
 ## ChangeLog

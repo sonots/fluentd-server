@@ -3,6 +3,7 @@ class CreateTasks < ActiveRecord::Migration
     create_table :tasks do |t|
       t.string :name
       t.text :body
+      t.integer :exit_code
       t.timestamps
     end
   end

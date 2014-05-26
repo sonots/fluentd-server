@@ -2,7 +2,7 @@ require 'sinatra/activerecord'
 require 'sinatra/decorator'
 require 'fluentd_server/environment'
 require 'fluentd_server/task_runner'
-require 'ext/acts_as_file'
+require 'acts_as_file'
 
 class Delayed::Job < ActiveRecord::Base; end
 
@@ -40,6 +40,18 @@ class Task < ActiveRecord::Base
   end
 
   acts_as_file :body => self.instance_method(:filename)
+
+  def finished?
+    !self.exit_code.nil?
+  end
+
+  def successful?
+    self.finished? and self.exit_code == 0
+  end
+
+  def error?
+    self.finished? and self.exit_code != 0
+  end
 
   def new?
     self.id.nil?

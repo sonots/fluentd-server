@@ -9,7 +9,8 @@ module TaskRunner
     system(write_event_header('restart'))
     cmd = serf_event('restart')
     logger.debug "run #{cmd}"
-    system(cmd)
+    self.exit_code = system(cmd)
+    self.save!
   end
  
   def status
@@ -20,7 +21,8 @@ module TaskRunner
   def delayed_status
     cmd = serf_query('status')
     logger.debug "run #{cmd}"
-    system(cmd)
+    self.exit_code = system(cmd)
+    self.save!
   end
 
   def configtest
@@ -31,7 +33,8 @@ module TaskRunner
   def delayed_configtest
     cmd = serf_query('configtest')
     logger.debug "run #{cmd}"
-    system(cmd)
+    self.exit_code = system(cmd)
+    self.save!
   end
 
   ## delayed_job hooks

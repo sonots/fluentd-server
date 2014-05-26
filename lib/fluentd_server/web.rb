@@ -109,6 +109,21 @@ class FluentdServer::Web < Sinatra::Base
     slim :"tasks/show"
   end
 
+  # get task body in json for ajax
+  get "/json/tasks/:id/body" do
+    content_type :json
+    offset = params[:offset].to_i
+    task = Task.find_by(id: params[:id])
+    body = task.body(offset).to_s
+    bytes = body.bytesize
+    more_data = !task.finished? || bytes > offset
+    {
+      body: body,
+      bytes: bytes,
+      moreData: more_data,
+    }.to_json.tap {|json| logger.debug json }
+  end
+
   # restart task
   post "/task/restart" do
     @task = ::Task.create_and_delete(name: 'Restart')
