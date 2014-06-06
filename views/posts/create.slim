@@ -2,7 +2,7 @@ h2[style="margin-top:0px;"]
   | Create Config
 br
 == bootstrap_flash
-form[action=url_for("/posts") method="post" role="form"]
+form[id="post_form" action=url_for("/posts") method="post" role="form"]
   .form-group
     label[for="post_name"]
       | Name:
@@ -15,6 +15,6 @@ form[action=url_for("/posts") method="post" role="form"]
     textarea#post_body.form-control[name="post[body]" rows="10"]
       = @post.body
     br
-  button.btn.btn-success[type="submit"]
+  button.btn.btn-success[id="post_submit" type="submit"]
     | Submit
   br

@@ -4,11 +4,11 @@ require 'fluentd_server/model'
 
 describe 'TaskRunner' do
   let(:task) { Task.create }
-  before { task.stub(:delay).and_return { task } }
+  before { allow(task).to receive(:delay).and_return(task) }
   after { Task.delete_all }
 
   context '.serf_path' do
-    it { expect(File.executable?(Task.serf_path)).to be_true }
+    it { expect(File.executable?(Task.serf_path)).to be_truthy }
   end
 
   # ToDo: Test whether the serf command is executed correctly
@@ -20,7 +20,7 @@ describe 'TaskRunner' do
     it { expect { task.status }.not_to raise_error }
   end
 
-  context '#configrest' do
+  context '#configtest' do
     it { expect { task.configtest }.not_to raise_error }
   end
 end

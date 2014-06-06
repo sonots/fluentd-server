@@ -11,8 +11,8 @@ describe Task do
   after { Task.delete_all }
 
   context '#new?' do
-    it { expect(Task.new.new?).to be_true }
-    it { expect(Task.create.new?).to be_false }
+    it { expect(Task.new.new?).to be_truthy }
+    it { expect(Task.create.new?).to be_falsey }
   end
 
   context '#filename' do
@@ -21,7 +21,7 @@ describe Task do
   end
 
   context '#create_and_delete' do
-    before { FluentdServer::Config.stub(:task_max_num).and_return(1) }
+    before { allow(FluentdServer::Config).to receive(:task_max_num).and_return(1) }
     before { @oldest = Task.create(name: 'Restart') }
     it {
       Task.create_and_delete(name: 'Restart')
