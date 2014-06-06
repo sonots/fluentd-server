@@ -11,7 +11,6 @@ class Post < ActiveRecord::Base
   include FluentdServer::Logger
 
   validates :name, presence: true
-  validates :body, presence: true
 
   if FluentdServer::Config.data_dir
     include ActsAsFile

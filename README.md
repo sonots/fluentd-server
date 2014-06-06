@@ -102,16 +102,25 @@ HOST=0.0.0.0
 # LOG_SHIFT_SIZE=1048576
 ```
 
-### DATA_DIR (experimental)
+### LOCAL FILE STORAGE
 
-Configure `DATA_DIR` in `.env` file as:
+Fluentd server also supports to edit Fluentd configuration files as local files for the case to use `git` (or other VCSs) to manage Fluentd configuration revisions. 
+
+To enable this feature, set `DATA_DIR` in `.env` file as:
 
 ```
 DATA_DIR=data
 ```
 
-to store and load Fluentd config contents not from DB, but from local files located at the directory `DATA_DIR`.
-This would be useful when you want to manage your config files with git. 
+Put any files whose name ends with `.erb` there. The `sync` worker automatically synchronize the file existence with DB. Removing `.erb` files is also synchronized with DB. 
+
+You may configure the synchronization interval with `SYNC_INTERVAL` in `.env` file as:
+
+```
+SYNC_INTERVAL=60
+```
+
+where the default is 60 seconds.
 
 ## HTTP API
 

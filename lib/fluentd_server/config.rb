@@ -36,4 +36,8 @@ module FluentdServer::Config
   def self.task_max_num
     ENV.fetch('TASK_MAX_NUM', '20').to_i
   end
+
+  def self.sync_interval
+    ENV.fetch('SYNC_INTERVAL', '60').to_i
+  end
 end

@@ -28,6 +28,7 @@ EOS
   DEFAULT_PROCFILE =<<-EOS
 web: unicorn -E production -p $PORT -o $HOST -c config/unicorn.conf
 job: fluentd-server job
+sync: fluentd-server sync
 serf: $(gem path serf-td-agent)/bin/serf agent
 EOS
 
@@ -103,6 +104,13 @@ EOS
     require 'delayed_job'
     require 'fluentd_server/model'
     Delayed::Job.delete_all
+  end
+
+  desc "sync", "Sartup fluentd_server sync worker"
+  def sync
+    Dotenv.load
+    require 'fluentd_server/sync_worker'
+    FluentdServer::SyncWorker.start
   end
 
   no_tasks do
