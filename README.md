@@ -121,12 +121,15 @@ SYNC_INTERVAL=60
 
 where the `DATA_DIR` is the location to place your configuration files locally, and the `SYNC_INTERVAL` is the interval where a synchronization worker works.
 
-Putting any files whose name ends with `.erb` in `DATA_DIR` is automatically synchronized with DB by the synchronization worker. Removing `.erb` files is also synchronized with DB.
-For the case you want to synchronize immediately, `sync` command is also available.
+Place your `erb` files in the `DATA_DIR` directory, and please execute `sync` command to synchronize the file existence information with DB
+when you newly add or remove the configuration files.
 
 ```
 $ fluentd-server sync
 ```
+
+Or, you may just wait `SYNC_INTERVAL` senconds until a synchronization worker automatically synchronizes the information.
+Please note that modifying the file content does not require to synchronize because the content is read from the local file directly.
 
 NOTE: Enabling this feature disables to edit the Fluentd configuration from the Web UI.
 
