@@ -1,3 +1,13 @@
+# 0.3.0
+
+Enhancements:
+
+* Add sync_worker
+
+Changes:
+
+* Use env LOCAL_STORAGE rather than DATA_DIR to enable local file storage feature
+
 # 0.2.0
 
 Enhancements:
