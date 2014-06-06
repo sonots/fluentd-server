@@ -1,3 +1,22 @@
+# 0.3.1
+
+Enhancements:
+
+* Add `fluentd-server sync` command
+* Add `fluentd-server td-agent-start` command
+* Add `fluentd-server td-agent-stop` command
+* Add `fluentd-server td-agent-reload` command
+* Add `fluentd-server td-agent-restart` command
+* Add `fluentd-server td-agent-condrestart` command
+* Add `fluentd-server td-agent-status` command
+* Add `fluentd-server td-agent-configtest` command
+
+Changes:
+
+* Rename `fluentd-server sync` command to `fluentd-server sync-worker`
+* Rename `fluentd-server job` command to `fluentd-server job-worker`
+* Rename `fluentd-server job_clear` command to `fluentd-server job-clean`
+
 # 0.3.0
 
 Enhancements:

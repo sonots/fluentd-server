@@ -102,11 +102,14 @@ HOST=0.0.0.0
 # LOG_SHIFT_SIZE=1048576
 ```
 
-### LOCAL STORAGE
+## HTTP API
 
-As default, Fluentd Server stores the Fluentd configuration contents into DB. 
+See [API.md](API.md).
 
-However, you may want to edit Fluentd configuration files as local files so that you can edit the configuration files with your favorite editors and manage their revisions with git (or any VCS). Then, you can turn on the `LOCAL STORAGE` feature.
+### Use Fluentd Server from Command Line
+
+For the case you want to edit Fluentd configuration files from your favorite editors rather than from the Web UI, `LOCAL STORAGE` feature is available.
+With this feature, you should also be able to manage your configuration files with git (or any VCS).
 
 To use this feature, enable `LOCAL_STORAGE` in `.env` file as:
 
@@ -118,13 +121,39 @@ SYNC_INTERVAL=60
 
 where the `DATA_DIR` is the location to place your configuration files locally, and the `SYNC_INTERVAL` is the interval where a synchronization worker works.
 
-Putting any files whose name ends with `.erb` in `DATA_DIR` is automatically synchronizeed with DB by the `sync` worker. Removing `.erb` files is also synchronized with DB. 
+Putting any files whose name ends with `.erb` in `DATA_DIR` is automatically synchronized with DB by the synchronization worker. Removing `.erb` files is also synchronized with DB.
+For the case you want to synchronize immediately, `sync` command is also available.
 
-NOTE: Enabling this feature disables to edit the Fluentd configuration from the Web UI. 
+```
+$ fluentd-server sync
+```
 
-## HTTP API
+NOTE: Enabling this feature disables to edit the Fluentd configuration from the Web UI.
 
-See [API.md](API.md).
+### CLI (Command Line Interface)
+
+Here is a full list of fluentd-server commands.
+
+```bash
+$ fluentd-server help
+Commands:
+  fluentd-server help [COMMAND]        # Describe available commands or one specific command
+  fluentd-server init                  # Creates database schema
+  fluentd-server job-clean             # Clean fluentd_server delayed_job queue
+  fluentd-server job-worker            # Sartup fluentd_server job worker
+  fluentd-server migrate               # Migrate database schema
+  fluentd-server new                   # Creates fluentd-server resource directory
+  fluentd-server start                 # Sartup fluentd_server
+  fluentd-server sync                  # Synchronize local file storage with db immediately
+  fluentd-server sync-worker           # Sartup fluentd_server sync worker
+  fluentd-server td-agent-condrestart  # Run `/etc/init.d/td-agent condrestart` via serf event
+  fluentd-server td-agent-configtest   # Run `/etc/init.d/td-agent configtest` via serf query
+  fluentd-server td-agent-reload       # Run `/etc/init.d/td-agent reload` via serf event
+  fluentd-server td-agent-restart      # Run `/etc/init.d/td-agent restart` via serf event
+  fluentd-server td-agent-start        # Run `/etc/init.d/td-agent start` via serf event
+  fluentd-server td-agent-status       # Run `/etc/init.d/td-agent status` via serf query
+  fluentd-server td-agent-stop         # Run `/etc/init.d/td-agent stop` via serf event
+```
 
 ## ToDo
 
