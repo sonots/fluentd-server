@@ -14,6 +14,10 @@ require 'sinatra/activerecord/rake'
 Rake::Task['db:schema:load'].invoke
 
 if ENV['TRAVIS']
+  require 'simplecov'
   require 'coveralls'
-  Coveralls.wear!
+  SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+  SimpleCov.start do
+    add_filter 'spec'
+  end
 end
