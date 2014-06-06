@@ -30,6 +30,14 @@ describe 'Post' do
         click_button('Submit')
       }.to change(Post, :count).by(1)
     end
+
+    it 'fails to create' do
+      expect {
+        fill_in "post[name]", with: ''
+        fill_in "post[body]", with: ''
+        click_button('Submit')
+      }.to change(Post, :count).by(0)
+    end
   end
   
   context 'edit post' do
@@ -48,6 +56,15 @@ describe 'Post' do
       edit = Post.find(post.id)
       expect(edit.name).to eql('bbbb')
       expect(edit.body).to eql('bbbb')
+    end
+
+    it 'fails to edit' do
+      fill_in "post[name]", with: ''
+      fill_in "post[body]", with: ''
+      click_button('Submit')
+      edit = Post.find(post.id)
+      expect(edit.name).not_to eql('')
+      expect(edit.body).not_to eql('')
     end
 
     # javascript click for `Really?` is required
@@ -90,6 +107,21 @@ describe 'Task' do
     it 'visit' do
       visit "/tasks/#{@task.id}"
       expect(page.status_code).to be == 200
+    end
+  end
+
+  context '/json/tasks/:id/body' do
+    include Rack::Test::Methods
+    def app; FluentdServer::Web; end
+
+    before { @task = Task.create }
+    it 'visit' do
+      get "/json/tasks/#{@task.id}/body"
+      expect(last_response.status).to eql(200)
+      body = JSON.parse(last_response.body)
+      expect(body).to be_has_key('body')
+      expect(body).to be_has_key('bytes')
+      expect(body).to be_has_key('moreData')
     end
   end
 
@@ -152,6 +184,3 @@ describe 'API' do
     end
   end
 end
-
-
-
