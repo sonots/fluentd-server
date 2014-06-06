@@ -12,7 +12,7 @@ describe 'Post' do
   context 'get ALL posts' do
     it 'visit' do
       visit '/'
-      page.status_code.should == 200
+      expect(page.status_code).to be == 200
     end
   end
 
@@ -20,7 +20,7 @@ describe 'Post' do
     before { visit '/posts/create' }
 
     it 'visit' do
-      page.status_code.should == 200
+      expect(page.status_code).to be == 200
     end
 
     it 'create' do
@@ -38,7 +38,7 @@ describe 'Post' do
     before { visit "/posts/#{post.id}/edit" }
 
     it 'visit' do
-      page.status_code.should == 200
+      expect(page.status_code).to be == 200
     end
 
     it 'edit' do
@@ -81,7 +81,7 @@ describe 'Task' do
   context 'list tasks' do
     it 'visit' do
       visit '/tasks'
-      page.status_code.should == 200
+      expect(page.status_code).to be == 200
     end
   end
 
@@ -89,7 +89,7 @@ describe 'Task' do
     before { @task = Task.create }
     it 'visit' do
       visit "/tasks/#{@task.id}"
-      page.status_code.should == 200
+      expect(page.status_code).to be == 200
     end
   end
 

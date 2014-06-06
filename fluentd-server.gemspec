@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rspec", "~> 2"
+  spec.add_development_dependency "rspec", "~> 3"
   spec.add_development_dependency "capybara"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-nav"
