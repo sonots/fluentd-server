@@ -30,8 +30,8 @@ EOS
 
   DEFAULT_PROCFILE =<<-EOS
 web: unicorn -E production -p $PORT -o $HOST -c config/unicorn.conf
-job: fluentd-server job
-sync: fluentd-server sync
+job: fluentd-server job-worker
+sync: fluentd-server sync-worker
 serf: $(gem path serf-td-agent)/bin/serf agent
 EOS
 
@@ -87,8 +87,8 @@ EOS
   end
 
   # reference: https://gist.github.com/robhurring/732327
-  desc "job", "Sartup fluentd_server job worker"
-  def job
+  desc "job-worker", "Sartup fluentd_server job worker"
+  def job_worker
     Dotenv.load
     require 'delayed_job'
     require 'fluentd_server/model'
@@ -101,19 +101,78 @@ EOS
     Delayed::Worker.new(worker_options).start
   end
 
-  desc "job_clear", "Clear fluentd_server delayed_job queue"
-  def job_clear
+  desc "job-clean", "Clean fluentd_server delayed_job queue"
+  def job_clean
     Dotenv.load
     require 'delayed_job'
     require 'fluentd_server/model'
     Delayed::Job.delete_all
   end
 
-  desc "sync", "Sartup fluentd_server sync worker"
-  def sync
+  desc "sync-worker", "Sartup fluentd_server sync worker"
+  def sync_worker
     Dotenv.load
     require 'fluentd_server/sync_worker'
     FluentdServer::SyncWorker.start
+  end
+
+  desc "sync", "Synchronize local file storage with db immediately"
+  def sync
+    Dotenv.load
+    require 'fluentd_server/sync_runner'
+    FluentdServer::SyncRunner.run
+  end
+
+  desc "td-agent-start", "Run `/etc/init.d/td-agent start` via serf event"
+  def td_agent_start
+    Dotenv.load
+    require 'fluentd_server/model'
+    system("#{::Task.serf_path} event td-agent-start")
+  end
+
+  desc "td-agent-stop", "Run `/etc/init.d/td-agent stop` via serf event"
+  def td_agent_stop
+    Dotenv.load
+    require 'fluentd_server/model'
+    system("#{::Task.serf_path} event td-agent-stop")
+  end
+
+  desc "td-agent-reload", "Run `/etc/init.d/td-agent reload` via serf event"
+  def td_agent_reload
+    Dotenv.load
+    require 'fluentd_server/model'
+    system("#{::Task.serf_path} event td-agent-reload")
+  end
+
+  desc "td-agent-restart", "Run `/etc/init.d/td-agent restart` via serf event"
+  def td_agent_restart
+    Dotenv.load
+    require 'fluentd_server/model'
+    # ::Task.create_and_delete(name: 'Restart').restart # using delayed_job
+    system("#{::Task.serf_path} event td-agent-restart")
+  end
+
+  desc "td-agent-condrestart", "Run `/etc/init.d/td-agent condrestart` via serf event"
+  def td_agent_condrestart
+    Dotenv.load
+    require 'fluentd_server/model'
+    system("#{::Task.serf_path} event td-agent-condrestart")
+  end
+
+  desc "td-agent-status", "Run `/etc/init.d/td-agent status` via serf query"
+  def td_agent_status
+    Dotenv.load
+    require 'fluentd_server/model'
+    # ::Task.create_and_delete(name: 'Status').status # using delayed_job
+    system("#{::Task.serf_path} query td-agent-status")
+  end
+
+  desc "td-agent-configtest", "Run `/etc/init.d/td-agent configtest` via serf query"
+  def td_agent_configtest
+    Dotenv.load
+    require 'fluentd_server/model'
+    # ::Task.create_and_delete(name: 'Configtest').configtest # using delayed_job
+    system("#{::Task.serf_path} query td-agent-configtest")
   end
 
   no_tasks do

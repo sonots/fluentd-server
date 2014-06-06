@@ -12,6 +12,7 @@ class FluentdServer::SyncRunner
   end
 
   def run
+    logger.debug "[sync] sync runner started"
     return nil unless FluentdServer::Config.local_storage
     plus, minus = find_diff
     create(plus)
