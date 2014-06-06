@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
 require 'fluentd_server/sync_runner'
 
-if FluentdServer::Config.data_dir
+if FluentdServer::Config.local_storage
   describe 'SyncRunner' do
     around {
       filenames = File.join(FluentdServer::Config.data_dir, '*.erb') 

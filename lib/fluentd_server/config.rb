@@ -5,10 +5,6 @@ require 'dotenv'
 Dotenv.load
 
 module FluentdServer::Config
-  def self.data_dir
-    ENV['DATA_DIR'] == "" ? nil : ENV['DATA_DIR']
-  end
-
   def self.database_url
     ENV.fetch('DATABASE_URL', 'sqlite3:data/fluentd_server.db')
   end
@@ -35,6 +31,14 @@ module FluentdServer::Config
 
   def self.task_max_num
     ENV.fetch('TASK_MAX_NUM', '20').to_i
+  end
+
+  def self.local_storage
+    ENV.fetch('LOCAL_STORAGE', 'false') == 'true' ? true : false
+  end
+
+  def self.data_dir
+    ENV.fetch('DATA_DIR', 'data')
   end
 
   def self.sync_interval

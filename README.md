@@ -100,27 +100,28 @@ HOST=0.0.0.0
 # LOG_LEVEL=debug
 # LOG_SHIFT_AGE=0
 # LOG_SHIFT_SIZE=1048576
+# LOCAL_STORAGE=false
+# DATA_DIR=data
+# SYNC_INTERVAL=60
 ```
 
 ### LOCAL FILE STORAGE
 
-Fluentd server also supports to edit Fluentd configuration files as local files for the case to use `git` (or other VCSs) to manage Fluentd configuration revisions. 
+Fluentd Server also supports to edit Fluentd configuration files as local files for the case using `git` (or any VCSs) to manage Fluentd configuration revisions. 
 
-To enable this feature, set `DATA_DIR` in `.env` file as:
+To use this feature, enable `LOCAL_STORAGE` in `.env` file:
 
 ```
+LOCAL_STORAGE=true
 DATA_DIR=data
-```
-
-Put any files whose name ends with `.erb` there. The `sync` worker automatically synchronize the file existence with DB. Removing `.erb` files is also synchronized with DB. 
-
-You may configure the synchronization interval with `SYNC_INTERVAL` in `.env` file as:
-
-```
 SYNC_INTERVAL=60
 ```
 
-where the default is 60 seconds.
+The `DATA_DIR` is the location to place your configuration files locally, and the `SYNC_INTERVAL` is the interval where a synchronization worker works.
+
+Putting any files whose name ends with `.erb` in `DATA_DIR` automatically synchronizes with DB by the `sync` worker. Removing `.erb` files is also synchronized with DB. 
+
+NOTE: Enabling this feature disables to edit the Fluentd configuration from the Web UI. 
 
 ## HTTP API
 
@@ -128,7 +129,6 @@ See [API.md](API.md).
 
 ## ToDo
 
-* Create a sync worker to synchronize local file existences with db (delete and create entries on db). 
 * Automatic deployment (restart) support like the one of chef-server
 
 ## ChangeLog

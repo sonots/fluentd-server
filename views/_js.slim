@@ -28,3 +28,9 @@ javascript:
     form.submit();
     return false;
   });
+- if FluentdServer::Config.local_storage
+  javascript:
+    $('#post_name').attr("disabled", "disabled");
+    $('#post_body').attr("disabled", "disabled");
+    $('#post_submit').addClass('disabled');
+    $('#post_delete').addClass('disabled');
