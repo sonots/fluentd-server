@@ -30,8 +30,8 @@ EOS
 
   DEFAULT_PROCFILE =<<-EOS
 web: unicorn -E production -p $PORT -o $HOST -c config/unicorn.conf
-job: fluentd-server job
-sync: fluentd-server sync
+job: fluentd-server job_worker
+sync: fluentd-server sync_worker
 serf: $(gem path serf-td-agent)/bin/serf agent
 EOS
 
@@ -87,8 +87,8 @@ EOS
   end
 
   # reference: https://gist.github.com/robhurring/732327
-  desc "job", "Sartup fluentd_server job worker"
-  def job
+  desc "job_worker", "Sartup fluentd_server job worker"
+  def job_worker
     Dotenv.load
     require 'delayed_job'
     require 'fluentd_server/model'
@@ -101,19 +101,26 @@ EOS
     Delayed::Worker.new(worker_options).start
   end
 
-  desc "job_clear", "Clear fluentd_server delayed_job queue"
-  def job_clear
+  desc "job_clean", "Clean fluentd_server delayed_job queue"
+  def job_clean
     Dotenv.load
     require 'delayed_job'
     require 'fluentd_server/model'
     Delayed::Job.delete_all
   end
 
-  desc "sync", "Sartup fluentd_server sync worker"
-  def sync
+  desc "sync_worker", "Sartup fluentd_server sync worker"
+  def sync_worker
     Dotenv.load
     require 'fluentd_server/sync_worker'
     FluentdServer::SyncWorker.start
+  end
+
+  desc "sync", "Synchronize local file storage with db now"
+  def sync
+    Dotenv.load
+    require 'fluentd_server/sync_runner'
+    FluentdServer::SyncRunner.run
   end
 
   no_tasks do
