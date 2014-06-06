@@ -3,23 +3,24 @@ require 'fluentd_server/sync_runner'
 
 if FluentdServer::Config.local_storage
   describe 'SyncRunner' do
-    around {
+    def clean
       filenames = File.join(FluentdServer::Config.data_dir, '*.erb') 
       Dir.glob(filenames).each { |f| File.delete(f) rescue nil }
       Post.delete_all
-    }
+    end
+    around {|example| clean; example.run; clean }
     let(:runner) { FluentdServer::SyncRunner.new }
 
     context '#find_locals' do
-      before { Post.create(name: 'post1') }
-      before { Post.create(name: 'post2') }
+      before { Post.create(name: 'post1', body: 'a') }
+      before { Post.create(name: 'post2', body: 'a') }
       let(:subject) { runner.find_locals }
       it { should =~ ['post1', 'post2' ] }
     end
 
     context '#find_diff' do
       before { Post.new(name: 'post1').save_without_file }
-      before { Post.create(name: 'post2') }
+      before { Post.create(name: 'post2', body: 'a') }
       before { File.open(Post.new(name: 'post3').filename, "w") {} }
       it {
         plus, minus = runner.find_diff
@@ -29,7 +30,7 @@ if FluentdServer::Config.local_storage
     end
 
     context '#create' do
-      before { Post.create(name: 'post1') }
+      before { Post.create(name: 'post1', body: 'a') }
       before { runner.create(%w[post1 post2]) }
       it {
         expect(Post.find_by(name: 'post1').body).not_to be_nil
@@ -39,8 +40,8 @@ if FluentdServer::Config.local_storage
 
     context '#delete' do
       before {
-        post1 = Post.create(name: 'post1')
-        post2 = Post.create(name: 'post2')
+        post1 = Post.create(name: 'post1', body: 'a')
+        post2 = Post.create(name: 'post2', body: 'a')
         runner.delete(%w[post1])
       }
       it {
@@ -51,7 +52,7 @@ if FluentdServer::Config.local_storage
 
     context '#run' do
       before { Post.new(name: 'post1').save_without_file }
-      before { Post.create(name: 'post2') }
+      before { Post.create(name: 'post2', body: 'a') }
       before { File.open(Post.new(name: 'post3').filename, "w") {} }
       it {
         runner.run
@@ -68,8 +69,8 @@ else
       it { should be_nil }
     end
     context '#find_locals' do
-      before { Post.create(name: 'post1') }
-      before { Post.create(name: 'post2') }
+      before { Post.create(name: 'post1', body: 'a') }
+      before { Post.create(name: 'post2', body: 'a') }
       let(:subject) { FluentdServer::SyncRunner.new.find_locals }
       it { should == [] }
     end
