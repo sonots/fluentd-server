@@ -162,6 +162,9 @@ Commands:
 
 * Automatic deployment (restart) support like the one of chef-server
 
+  * Need a notification function for when configtest or restart failed
+  * Pipe the resulted json to a command (I may prepare email.rb as an example).
+
 ## ChangeLog
 
 See [CHANGELOG.md](CHANGELOG.md) for details.
