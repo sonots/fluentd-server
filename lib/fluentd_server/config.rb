@@ -33,8 +33,8 @@ module FluentdServer::Config
     ENV.fetch('TASK_MAX_NUM', '20').to_i
   end
 
-  def self.local_storage
-    ENV.fetch('LOCAL_STORAGE', 'false') == 'true' ? true : false
+  def self.file_storage
+    ENV.fetch('FILE_STORAGE', 'false') == 'true' ? true : false
   end
 
   def self.data_dir

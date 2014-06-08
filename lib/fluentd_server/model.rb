@@ -12,7 +12,7 @@ class Post < ActiveRecord::Base
 
   validates :name, presence: true
 
-  if FluentdServer::Config.local_storage
+  if FluentdServer::Config.file_storage
     include ActsAsFile
 
     def filename

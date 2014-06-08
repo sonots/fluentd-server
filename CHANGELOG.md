@@ -1,3 +1,9 @@
+# 0.3.2 (2014/06/08)
+
+Changes:
+
+* Rename `LOCAL_STORAGE` to `FILE_STORAGE`
+
 # 0.3.1
 
 Enhancements:

@@ -13,14 +13,14 @@ class FluentdServer::SyncRunner
 
   def run
     logger.debug "[sync] sync runner started"
-    return nil unless FluentdServer::Config.local_storage
+    return nil unless FluentdServer::Config.file_storage
     plus, minus = find_diff
     create(plus)
     delete(minus)
   end
 
   def find_locals
-    return [] unless FluentdServer::Config.local_storage
+    return [] unless FluentdServer::Config.file_storage
     names = []
     Dir.chdir(FluentdServer::Config.data_dir) do
       Dir.glob("*.erb") do |filename|

@@ -108,13 +108,13 @@ See [API.md](API.md).
 
 ### Use Fluentd Server from Command Line
 
-For the case you want to edit Fluentd configuration files from your favorite editors rather than from the Web UI, `LOCAL STORAGE` feature is available.
+For the case you want to edit Fluentd configuration files from your favorite editors rather than from the Web UI, `FILE STORAGE` feature is available.
 With this feature, you should also be able to manage your configuration files with git (or any VCS).
 
-To use this feature, enable `LOCAL_STORAGE` in `.env` file as:
+To use this feature, enable `FILE_STORAGE` in `.env` file as:
 
 ```
-LOCAL_STORAGE=true
+FILE_STORAGE=true
 DATA_DIR=data
 SYNC_INTERVAL=60
 ```

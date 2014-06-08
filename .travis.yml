@@ -4,5 +4,5 @@ rvm:
 gemfile:
   - Gemfile
 env:
-  - LOCAL_STORAGE=false
-  - LOCAL_STORAGE=true DATA_DIR=spec/tmp
+  - FILE_STORAGE=false
+  - FILE_STORAGE=true DATA_DIR=spec/tmp
