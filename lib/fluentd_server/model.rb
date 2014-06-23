@@ -13,6 +13,10 @@ class Post < ActiveRecord::Base
 
   validates :name, presence: true
 
+  if FluentdServer::Config.file_storage && FluentdServer::Config.store_history
+    raise ArgumentError, "Cannot use both FILE_STORAGE and STORE_HISTORY"
+  end
+
   if FluentdServer::Config.file_storage
     include ActsAsFile
 
