@@ -1,10 +1,18 @@
 require_relative 'spec_helper'
 require 'fluentd_server/model'
+require 'paper_trail'
 
 describe Delayed::Job do
 end
 
 describe Post do
+  if not FluentdServer::Config.store_history
+    it { should_not be_versioned }
+  end
+
+  if FluentdServer::Config.store_history
+    it { should be_versioned }
+  end
 end
 
 describe Task do

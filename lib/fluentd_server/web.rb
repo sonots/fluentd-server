@@ -11,6 +11,8 @@ require 'fluentd_server/decorator'
 require 'fluentd_server/logger'
 require 'fluentd_server/web_helper'
 
+require 'date'
+
 class FluentdServer::Web < Sinatra::Base
   include FluentdServer::Logger
   helpers FluentdServer::WebHelper
@@ -45,6 +47,9 @@ class FluentdServer::Web < Sinatra::Base
   get "/posts/:id/edit" do
     @tab = 'posts'
     @post = Post.find_by(id: params[:id])
+    if FluentdServer::Config.store_history
+      @versions =  @post.versions
+    end
     redirect "/" unless @post
     @posts = Post.order("name ASC")
     slim :"posts/layout"
@@ -86,9 +91,12 @@ class FluentdServer::Web < Sinatra::Base
   end
 
   # render api
-  get "/api/:name" do
+  get "/api/:name/?:time?" do
     @post = Post.find_by(name: params[:name])
     return 404 unless @post
+    if FluentdServer::Config.store_history && params[:time]
+      @post = @post.version_at(Time.at(params[:time].to_i + 1))
+    end
     query_params = parse_query(request.query_string)
     content_type :text
     @post.decorate.render_body(query_params)

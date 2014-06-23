@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rspec", "~> 3"
   spec.add_development_dependency "capybara"
+  spec.add_development_dependency "timecop"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-nav"
   spec.add_development_dependency "rake"
@@ -29,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "foreman"
   spec.add_runtime_dependency "thor"
 
+  spec.add_runtime_dependency "paper_trail"
   spec.add_runtime_dependency "sinatra"
   spec.add_runtime_dependency "activerecord"
   spec.add_runtime_dependency "sinatra-contrib"

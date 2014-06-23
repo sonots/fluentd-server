@@ -44,4 +44,8 @@ module FluentdServer::Config
   def self.sync_interval
     ENV.fetch('SYNC_INTERVAL', '60').to_i
   end
+
+  def self.store_history
+    ENV.fetch('STORE_HISTORY', 'false') == 'true' ? true : false
+  end
 end

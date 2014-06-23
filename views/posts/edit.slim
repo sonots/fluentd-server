@@ -2,6 +2,7 @@ h2[style="margin-top:0px;"]
   | Edit Config
 br
 == bootstrap_flash
+
 form id="post_form" action=url_for("/posts/#{@post.id}") method="post"
   .form-group
     label[for="post_name"]
@@ -15,10 +16,22 @@ form id="post_form" action=url_for("/posts/#{@post.id}") method="post"
     textarea#post_body.form-control[name="post[body]" rows="10"]
       = @post.body
     br
-    a href=url_for("/api/#{@post.name}")
-      | Render
   button.btn.btn-success[id="post_submit" type="submit"]
     | Submit
   | &nbsp;
   a.btn.btn-danger id="post_delete" data-method="post" data-confirm="true" href=url_for("/posts/#{@post.id}/delete")
     | Delete
+h3
+  | Render
+div.btn-group
+  a.btn.btn-default href=url_for("/api/#{@post.name}")
+    | Current
+  - if @versions
+    button.btn.btn-default.dropdown-toggle type="button" data-toggle="dropdown"
+      | History
+      span.caret
+    ul.dropdown-menu
+      - for version in @versions do
+        li
+          a href=url_for("/api/#{@post.name}/#{version.created_at.to_i}")
+            | #{version.created_at}

@@ -3,6 +3,7 @@ require 'sinatra/decorator'
 require 'fluentd_server/environment'
 require 'fluentd_server/task_runner'
 require 'acts_as_file'
+require 'paper_trail'
 
 class Delayed::Job < ActiveRecord::Base; end
 
@@ -12,6 +13,10 @@ class Post < ActiveRecord::Base
 
   validates :name, presence: true
 
+  if FluentdServer::Config.file_storage && FluentdServer::Config.store_history
+    raise ArgumentError, "Cannot use both FILE_STORAGE and STORE_HISTORY"
+  end
+
   if FluentdServer::Config.file_storage
     include ActsAsFile
 
@@ -20,6 +25,10 @@ class Post < ActiveRecord::Base
     end
 
     acts_as_file :body => self.instance_method(:filename)
+  end
+
+  if FluentdServer::Config.store_history
+    has_paper_trail
   end
 
   def new?
