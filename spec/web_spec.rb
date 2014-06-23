@@ -2,6 +2,8 @@ require_relative 'spec_helper'
 require 'fluentd_server/web'
 require 'capybara'
 require 'capybara/dsl'
+require 'paper_trail'
+require 'timecop'
 
 Capybara.app = FluentdServer::Web
 
@@ -163,6 +165,23 @@ describe 'API' do
   context 'render api' do
     it 'render' do
       get "/api/#{post.name}?key=value"
+      expect(last_response.status).to eql(200)
+      expect(last_response.body).to eql('value')
+    end
+
+    it 'render by history' do
+      ENV['STORE_HISTORY'] = 'true'
+      load('fluentd_server/model.rb')
+      with_versioning do
+        timestamp = Timecop.freeze(Date.today - 10) do
+          post.body = 'hoge'
+          post.save
+        end
+      end
+      get "/api/#{post.name}?key=value"
+      expect(last_response.status).to eql(200)
+      expect(last_response.body).to eql('hoge')
+      get "/api/#{post.name}/#{(Date.today - 20).to_time.to_i}?key=value"
       expect(last_response.status).to eql(200)
       expect(last_response.body).to eql('value')
     end

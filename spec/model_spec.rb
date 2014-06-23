@@ -1,10 +1,22 @@
 require_relative 'spec_helper'
 require 'fluentd_server/model'
+require 'paper_trail'
 
 describe Delayed::Job do
 end
 
 describe Post do
+  it do
+    ENV['STORE_HISTORY'] = 'false'
+    load 'fluentd_server/model.rb'
+    should_not be_versioned
+  end
+
+  it do
+    ENV['STORE_HISTORY'] = 'true'
+    load 'fluentd_server/model.rb'
+    should be_versioned
+  end
 end
 
 describe Task do
