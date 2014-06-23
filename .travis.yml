@@ -6,3 +6,4 @@ gemfile:
 env:
   - FILE_STORAGE=false
   - FILE_STORAGE=true DATA_DIR=spec/tmp
+  - STORE_HISTORY=true

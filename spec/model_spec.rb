@@ -6,16 +6,12 @@ describe Delayed::Job do
 end
 
 describe Post do
-  it do
-    ENV['STORE_HISTORY'] = 'false'
-    load 'fluentd_server/model.rb'
-    should_not be_versioned
+  if not FluentdServer::Config.store_history
+    it { should_not be_versioned }
   end
 
-  it do
-    ENV['STORE_HISTORY'] = 'true'
-    load 'fluentd_server/model.rb'
-    should be_versioned
+  if FluentdServer::Config.store_history
+    it { should be_versioned }
   end
 end
 
